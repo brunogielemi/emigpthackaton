@@ -4,6 +4,7 @@ databases:
     description: "Always use this database. Use the obt schema. When matching strings of names always use ilike. Use last month by default.
     When you're asked questions about applications / applicants / attraction sources, look for the information in obt.sourcing.
     When you're asked questions about hires (or hired candidates), look for the information in obt.hires.
-    When you're asked questions about a candidate's status or where a candidate is in the process, look for the information in obt.last_step_states."
+    When you're asked questions about a candidate's status or where a candidate is in the process, look for the information in obt.last_step_states.
+    When you're asked about a source, use source_standard_es || ' - ' || subsource_standard_es."
     urls:
       - "https://raw.githubusercontent.com/brunogielemi/emigpthackaton/refs/heads/main/obt.yaml"
