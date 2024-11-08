@@ -1,0 +1,370 @@
+columns:
+- column: candidate_id
+  description: The ID of the candidate. Ideally, each `candidate` ID` represents one
+    real human. This is generated after the candidate finishes its application, so
+    it does not exist in the context of screening conversations.
+  type: integer
+- column: listing_id
+  description: The ID of the listing.
+  type: integer
+- column: subsidiary_id
+  description: The ID of the Subsidiary.
+  type: integer
+- column: listing_candidate_id
+  description: ID from the table `candidate.listing_candidates`. It's a unique ID
+    to represent the combination candidate - listing. With the Reapplications feature,
+    there is no longer a unique relation between those entities, so it should be deprecated
+    when the migration to Candidate Funnel Instances is completed.
+  type: integer
+- column: candidate_funnel_instance_id
+  description: The id of the candidate funnel instance
+  type: integer
+- column: candidate_name
+  description: The name of the candidate. It is stored in the question index `name_logic`.
+  type: character varying(65535)
+- column: hired_at
+  description: 'Timestamp at which the candidate was hired. It usually consists of
+    the timestamp of the movement of the candidate to a hired step, but it can be
+    overwritten with the following information: 1. Clients with the Entry Date feature:
+    the entry date of the candidate at work, provided by the client in the BO. 2.
+    Candidates manually advanced to the hired step: with a hire date provided by the
+    client or support.'
+  type: date
+- column: working_place_name
+  description: 'Name of the working place (Subsidiary Location). The assignment is
+    made by picking the first not null value from this list: 1. The working place
+    defined manually by a user through the BO after the previous manual assignment
+    2. The working place defined manually by a user through the BO, if not, 3. The
+    working place defined by the Interview service​'
+  type: character varying(65535)
+- column: working_place_country
+  type: character varying(65535)
+- column: working_place_state
+  description: Value of subsidiary location tags 'Estado' and 'State'. Matched case
+    insensitive without accents.
+  type: character varying(65535)
+- column: working_place_division
+  description: Value of subsidiary location tags 'División' and 'Célula'. Matched
+    case insensitive without accents.
+  type: character varying(65535)
+- column: working_place_region
+  description: Value of subsidiary location tag 'Región'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_city
+  description: Value of subsidiary location tags 'City' and 'Ciudad'. Matched case
+    insensitive without accents.
+  type: character varying(65535)
+- column: working_place_site
+  description: Value of subsidiary location tag 'Site'. Matched case insensitive without
+    accents.
+  type: character varying(65535)
+- column: working_place_zone
+  description: Value of subsidiary location tags 'Zona', 'Zone' and 'Municipio'. Matched
+    case insensitive without accents.
+  type: character varying(65535)
+- column: working_place_field
+  description: Value of subsidiary location tag 'Campo'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_market
+  description: Value of subsidiary location tag 'Mercado'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_recruiter_name
+  type: character varying(65535)
+- column: working_place_recruiter_id
+  type: character varying(65535)
+- column: working_place_brand
+  type: character varying(65535)
+- column: working_place_format
+  description: Value of subsidiary location tag 'Formato'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_province
+  description: Value of subsidiary location tag 'Provincia'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_plaza
+  description: Value of subsidiary location tags 'Plaza', 'Colonia' and 'Cluster'.
+    Matched case insensitive without accents.
+  type: character varying(65535)
+- column: working_place_type
+  description: Value of subsidiary location tags 'caracteristica_operacion', 'Unidad
+    de Negocio', 'Tipo de Sucursal' and 'Tipo Sucursal'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_zipcode
+  description: Value of subsidiary location tag 'Zipcode'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_recruiter_email
+  type: character varying(65535)
+- column: working_place_category
+  description: Value of subsidiary location tag 'Categoría'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: position_id
+  description: 'The ID of the position currently assigned to the candidate in this
+    listing. The assignment is made by picking the first not null value from this
+    list: 1. Question index `new_manually_assigned_job_position_id` (the position
+    manually defined by a user through the BO after the previous manual assignment)
+    2. Question index `manually_assigned_job_position_id` (the position manually defined
+    by a user through the BO) 3. Question index `assigned_job_position_id` (the position
+    defined by the Interview service) 4. Question index `job_position_id`. Note that
+    this question index usually stores a **list** of IDs. When this is the first not-null
+    value, we say that the candidate has multiple current job positions, and each
+    cell of this column will store one of those IDs. (the position defined by the
+    Descartes service) 5. Question index `applied_job_position_id` (the position for
+    which the candidate applied (eref2))'
+  type: integer
+- column: position_name
+  description: The name of the current job position of the candidate.
+  type: character varying(65535)
+- column: first_hierarchy_name
+  type: character varying(65535)
+- column: second_hierarchy_name
+  type: character varying(65535)
+- column: third_hierarchy_name
+  type: character varying(65535)
+- column: fourth_hierarchy_name
+  type: character varying(65535)
+- column: pulse_general_feeling_7days
+  description: How satisfied is the employee with their work captured in the 7 day
+    pulse survey
+  type: character varying(65535)
+- column: pulse_general_feeling_why_7days
+  description: Reasons why an employee is feeling unsatisfied or very unsatisfied
+    with their work in the company captured in the 7 day pulse survey
+  type: character varying(65535)
+- column: pulse_why_left_7days
+  description: Reasons why the employee left captured in the 7 day pulse survey
+  type: character varying(65535)
+- column: pulse_leader_satisfaction_7days
+  description: Employee satisfaction working with their leader captured in the 7 day
+    pulse survey
+  type: character varying(65535)
+- column: pulse_leader_satisfaction_why_7days
+  description: Reasons why an employee is unsatisfied or very unsatisfied working
+    with their leader captured in the 7 day pulse survey
+  type: character varying(65535)
+- column: pulse_work_environment_satisfaction_7days
+  description: Employee satisfaction with their work environment captured in the 7
+    day pulse survey
+  type: character varying(65535)
+- column: pulse_work_environment_satisfaction_why_7days
+  description: Reasons why an employee is unsatisfied or very unsatisfied with their
+    work environment captured in the 7 day pulse survey
+  type: character varying(65535)
+- column: pulse_work_load_satisfaction_7days
+  description: Employee satisfaction with their work load captured in the 7 day pulse
+    survey
+  type: character varying(65535)
+- column: pulse_work_load_satisfaction_why_7days
+  description: Reasons why an employee is unsatisfied or very unsatisfied with their
+    work load captured in the 7 day pulse survey
+  type: character varying(65535)
+- column: pulse_training_check_7days
+  description: Employee satisfaction with received training captured in the 7 day
+    pulse survey
+  type: character varying(65535)
+- column: pulse_training_check_why_7days
+  description: Reasons why an employee is unsatisfied or very unsatisfied with their
+    received training captured in the 7 day pulse survey
+  type: character varying(65535)
+- column: pulse_value_7days
+  description: How much an employee would recommend their company to friends and family
+    graded 1 to 10, captured in the 7 day pulse survey. This is used to create the
+    7 day NPS.
+  type: character varying(65535)
+- column: pulse_value_why_7days
+  description: Reasons why the employee chose their pulse_value_7days score captured
+    in the 7 day pulse survey
+  type: character varying(65535)
+- column: pulse_general_feeling_14days
+  description: How satisfied is the employee with their work captured in the 14 day
+    pulse survey
+  type: character varying(65535)
+- column: pulse_general_feeling_why_14days
+  description: Reasons why an employee is feeling unsatisfied or very unsatisfied
+    with their work in the company captured in the 14 day pulse survey
+  type: character varying(65535)
+- column: pulse_why_left_14days
+  description: Reasons why the employee left captured in the 14 day pulse survey
+  type: character varying(65535)
+- column: pulse_leader_satisfaction_14days
+  description: Employee satisfaction working with their leader captured in the 14
+    day pulse survey
+  type: character varying(65535)
+- column: pulse_leader_satisfaction_why_14days
+  description: Reasons why an employee is unsatisfied or very unsatisfied working
+    with their leader captured in the 14 day pulse survey
+  type: character varying(65535)
+- column: pulse_work_environment_satisfaction_14days
+  description: Employee satisfaction with their work environment captured in the 14
+    day pulse survey
+  type: character varying(65535)
+- column: pulse_work_environment_satisfaction_why_14days
+  description: Reasons why an employee is unsatisfied or very unsatisfied with their
+    work environment captured in the 14 day pulse survey
+  type: character varying(65535)
+- column: pulse_work_load_satisfaction_14days
+  description: Employee satisfaction with their work load captured in the 14 day pulse
+    survey
+  type: character varying(65535)
+- column: pulse_work_load_satisfaction_why_14days
+  description: Reasons why an employee is unsatisfied or very unsatisfied with their
+    work load captured in the 14 day pulse survey
+  type: character varying(65535)
+- column: pulse_value_14days
+  description: How much an employee would recommend their company to friends and family
+    graded 1 to 10, captured in the 14 day pulse survey. This is used to create the
+    14 day NPS.
+  type: character varying(65535)
+- column: pulse_value_why_14days
+  description: Reasons why the employee chose their pulse_value_14days score captured
+    in the 14 day pulse survey
+  type: character varying(65535)
+- column: pulse_general_feeling_30days
+  description: How satisfied is the employee with their work captured in the 30 day
+    pulse survey
+  type: character varying(65535)
+- column: pulse_general_feeling_why_30days
+  description: Reasons why an employee is feeling unsatisfied or very unsatisfied
+    with their work in the company captured in the 30 day pulse survey
+  type: character varying(65535)
+- column: pulse_why_left_30days
+  description: Reasons why the employee left captured in the 30 day pulse survey
+  type: character varying(65535)
+- column: pulse_leader_satisfaction_30days
+  description: Employee satisfaction working with their leader captured in the 30
+    day pulse survey
+  type: character varying(65535)
+- column: pulse_leader_satisfaction_why_30days
+  description: Reasons why an employee is unsatisfied or very unsatisfied working
+    with their leader captured in the 30 day pulse survey
+  type: character varying(65535)
+- column: pulse_work_environment_satisfaction_30days
+  description: Employee satisfaction with their work environment captured in the 30
+    day pulse survey
+  type: character varying(65535)
+- column: pulse_work_environment_satisfaction_why_30days
+  description: Reasons why an employee is unsatisfied or very unsatisfied with their
+    work environment captured in the 30 day pulse survey
+  type: character varying(65535)
+- column: pulse_work_load_satisfaction_30days
+  description: Employee satisfaction with their work load captured in the 30 day pulse
+    survey
+  type: character varying(65535)
+- column: pulse_work_load_satisfaction_why_30days
+  description: Reasons why an employee is unsatisfied or very unsatisfied with their
+    work load captured in the 30 day pulse survey
+  type: character varying(65535)
+- column: pulse_career_check_30days
+  description: Willingness of an employee to continue their career within the company,
+    captured in the 30 day pulse survey
+  type: character varying(65535)
+- column: pulse_career_check_why_30days
+  description: Reasons why an employee might not want to continue their career within
+    the company captured in the 30 day pulse survey
+  type: character varying(65535)
+- column: pulse_value_30days
+  description: How much an employee would recommend their company to friends and family
+    graded 1 to 10, captured in the 30 day pulse survey. This is used to create the
+    30 day NPS.
+  type: character varying(65535)
+- column: pulse_value_why_30days
+  description: Reasons why the employee chose their pulse_value_30days score captured
+    in the 30 day pulse survey
+  type: character varying(65535)
+- column: pulse_general_feeling_60days
+  description: How satisfied is the employee with their work captured in the 60 day
+    pulse survey
+  type: character varying(65535)
+- column: pulse_general_feeling_why_60days
+  description: Reasons why an employee is feeling unsatisfied or very unsatisfied
+    with their work in the company captured in the 60 day pulse survey
+  type: character varying(65535)
+- column: pulse_why_left_60days
+  description: Reasons why the employee left captured in the 60 day pulse survey
+  type: character varying(65535)
+- column: pulse_leader_satisfaction_60days
+  description: Employee satisfaction working with their leader captured in the 60
+    day pulse survey
+  type: character varying(65535)
+- column: pulse_leader_satisfaction_why_60days
+  description: Reasons why an employee is unsatisfied or very unsatisfied working
+    with their leader captured in the 60 day pulse survey
+  type: character varying(65535)
+- column: pulse_work_environment_satisfaction_60days
+  description: Employee satisfaction with their work environment captured in the 60
+    day pulse survey
+  type: character varying(65535)
+- column: pulse_work_environment_satisfaction_why_60days
+  description: Reasons why an employee is unsatisfied or very unsatisfied with their
+    work environment captured in the 60 day pulse survey
+  type: character varying(65535)
+- column: pulse_work_load_satisfaction_60days
+  description: Employee satisfaction with their work load captured in the 60 day pulse
+    survey
+  type: character varying(65535)
+- column: pulse_work_load_satisfaction_why_60days
+  description: Reasons why an employee is unsatisfied or very unsatisfied with their
+    work load captured in the 60 day pulse survey
+  type: character varying(65535)
+- column: pulse_value_60days
+  description: How much an employee would recommend their company to friends and family
+    graded 1 to 10, captured in the 60 day pulse survey. This is used to create the
+    60 day NPS.
+  type: character varying(65535)
+- column: pulse_value_why_60days
+  description: Reasons why the employee chose their pulse_value_60days score captured
+    in the 60 day pulse survey
+  type: character varying(65535)
+- column: pulse_general_feeling_90days
+  description: How satisfied is the employee with their work captured in the 90 day
+    pulse survey
+  type: character varying(65535)
+- column: pulse_general_feeling_why_90days
+  description: Reasons why an employee is feeling unsatisfied or very unsatisfied
+    with their work in the company captured in the 90 day pulse survey
+  type: character varying(65535)
+- column: pulse_why_left_90days
+  description: Reasons why the employee left captured in the 90 day pulse survey
+  type: character varying(65535)
+- column: pulse_leader_satisfaction_90days
+  description: Employee satisfaction working with their leader captured in the 90
+    day pulse survey
+  type: character varying(65535)
+- column: pulse_leader_satisfaction_why_90days
+  description: Reasons why an employee is unsatisfied or very unsatisfied working
+    with their leader captured in the 90 day pulse survey
+  type: character varying(65535)
+- column: pulse_work_environment_satisfaction_90days
+  description: Employee satisfaction with their work environment captured in the 90
+    day pulse survey
+  type: character varying(65535)
+- column: pulse_work_environment_satisfaction_why_90days
+  description: Reasons why an employee is unsatisfied or very unsatisfied with their
+    work environment captured in the 90 day pulse survey
+  type: character varying(65535)
+- column: pulse_work_load_satisfaction_90days
+  description: Employee satisfaction with their work load captured in the 90 day pulse
+    survey
+  type: character varying(65535)
+- column: pulse_work_load_satisfaction_why_90days
+  description: Reasons why an employee is unsatisfied or very unsatisfied with their
+    work load captured in the 90 day pulse survey
+  type: character varying(65535)
+- column: pulse_value_90days
+  description: How much an employee would recommend their company to friends and family
+    graded 1 to 10, captured in the 90 day pulse survey. This is used to create the
+    90 day NPS.
+  type: character varying(65535)
+- column: pulse_value_why_90days
+  description: Reasons why the employee chose their pulse_value_90days score captured
+    in the 90 day pulse survey
+  type: character varying(65535)
+table_description: Transformations for the results of the pulse survey by candidate
+  funnel instance, location and position
+table_name: pulse_survey

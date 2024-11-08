@@ -1,0 +1,175 @@
+columns:
+- column: subsidiary_id
+  description: The ID of the Subsidiary.
+  type: integer
+- column: subsidiary_name
+  description: The name of the Subsidiary.
+  type: character varying(65535)
+- column: listing_id
+  description: The ID of the listing.
+  type: integer
+- column: listing_name
+  description: The name of the listing.
+  type: character varying(65535)
+- column: application_date
+  description: The date at which the candidate applied. This is usually the timestamp
+    of the application creation (`candidate.applications.created_at`), casted to date
+    format.
+  type: date
+- column: hired_date
+  description: '`Hired_at` column truncated to date.'
+  type: date
+- column: entry_date
+  description: The entry date of the candidate. This is usually loaded by the recruiter
+    and it's stored in the question indexes `entry_datetime` or `entry_date_time`.
+  type: date
+- column: manually_advanced_steps
+  description: Represents if the candidate has advanced any steps in the funnel in
+    a non-organical way. For example, through candidate action or support.
+  type: boolean
+- column: n_candidate_id
+  description: 'A composed identifier for candidates before Screening (where the Candidate
+    ID is created). It''s created as follows: 1. First, if the candidate already has
+    an ID, it''s equal to the Candidate ID. 2. Otherwise, if the Candidate Channel
+    ID is already associated with a Candidate ID, we use that Candidate ID. 3. Finally,
+    if we can''t associate a Candidate ID with the conversation we use a concatenation
+    of `C` plus the Candidate Channel ID.'
+  type: character varying(65535)
+- column: candidate_id
+  description: The ID of the candidate. Ideally, each `candidate` ID` represents one
+    real human. This is generated after the candidate finishes its application, so
+    it does not exist in the context of screening conversations.
+  type: integer
+- column: listing_candidate_id
+  description: ID from the table `candidate.listing_candidates`. It's a unique ID
+    to represent the combination candidate - listing.
+  type: integer
+- column: candidate_funnel_instance_id
+  description: The id of the candidate funnel instance.
+  type: integer
+- column: subsidiary_location_id
+  description: The ID of the Subsidiary Location.
+  type: integer
+- column: working_place_name
+  description: 'Name of the working place (Subsidiary Location). The assignment is
+    made by picking the first not null value from this list: 1. The working place
+    defined manually by a user through the BO after the previous manual assignment
+    2. The working place defined manually by a user through the BO, if not, 3. The
+    working place defined by the Interview service.'
+  type: character varying(65535)
+- column: working_place_region
+  description: Value of subsidiary location tag "Región". Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_province
+  description: Value of subsidiary location tag "Provincia". Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_plaza
+  description: Value of subsidiary location tags "Plaza", "Colonia" and "Cluster".
+    Matched case insensitive without accents.
+  type: character varying(65535)
+- column: working_place_city
+  description: Value of subsidiary location tags "City" and "Ciudad". Matched case
+    insensitive without accents.
+  type: character varying(65535)
+- column: working_place_division
+  description: Value of subsidiary location tags "División" and "Célula". Matched
+    case insensitive without accents.
+  type: character varying(65535)
+- column: working_place_field
+  description: Value of subsidiary location tag "Campo". Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_site
+  description: Value of subsidiary location tag "Site". Matched case insensitive without
+    accents.
+  type: character varying(65535)
+- column: working_place_state
+  description: Value of subsidiary location tags "Estado" and "State". Matched case
+    insensitive without accents.
+  type: character varying(65535)
+- column: working_place_zone
+  description: Value of subsidiary location tags "Zona", "Zone" and "Municipio". Matched
+    case insensitive without accents.
+  type: character varying(65535)
+- column: working_place_market
+  description: Value of subsidiary location tag "Mercado". Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_format
+  description: Value of subsidiary location tag "Formato". Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_zipcode
+  description: Value of subsidiary location tag "Zipcode". Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_category
+  description: Value of subsidiary location tag "Categoría". Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_type
+  description: Value of subsidiary location tags "caracteristica_operacion", "Unidad
+    de Negocio", "Tipo de Sucursal" and "Tipo Sucursal". Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: current_position_id
+  description: 'The ID of the position currently assigned to the candidate in this
+    listing. The assignment is made by picking the first not null value from this
+    list: 1. Question index `new_manually_assigned_job_position_id` (the position
+    manually defined by a user through the BO after the previous manual assignment)
+    2. Question index `manually_assigned_job_position_id` (the position manually defined
+    by a user through the BO) 3. Question index `assigned_job_position_id` (the position
+    defined by the Interview service) 4. Question index `job_position_id`. Note that
+    this question index usually stores a **list** of IDs.'
+  type: integer
+- column: current_position_name
+  description: The name of the position currently assigned to the candidate in this
+    listing.
+  type: character varying(65535)
+- column: current_position_first_hierarchy
+  description: The first hierarchy of the position currently assigned to the candidate
+    in this listing.
+  type: character varying(65535)
+- column: current_position_second_hierarchy
+  description: The second hierarchy of the position currently assigned to the candidate
+    in this listing.
+  type: character varying(65535)
+- column: current_position_third_hierarchy
+  description: The third hierarchy of the position currently assigned to the candidate
+    in this listing.
+  type: character varying(65535)
+- column: current_position_fourth_hierarchy
+  description: The fourth hierarchy of the position currently assigned to the candidate
+    in this listing.
+  type: character varying(65535)
+- column: time_to_hire_secs
+  description: Seconds that passed between the end of the conversation (step_type
+    = 'DESCARTES' AND state = 'INTERESTED') and the hired_date.
+  type: double precision
+- column: time_to_cover_emi_secs
+  description: Seconds that passed between the end of the conversation (step_type
+    = 'DESCARTES' AND state = 'INTERESTED') and the first interview invitation, for
+    interviews organized by Emi.
+  type: double precision
+- column: time_to_cover_manual_secs
+  description: Seconds that passed between the end of the conversation (step_type
+    = 'DESCARTES' AND state = 'INTERESTED') and the first interview evaluation, for
+    manual interviews.
+  type: double precision
+- column: time_from_screening_approval_to_hire_secs
+  description: Seconds between candidate screening approval and hire.
+  type: double precision
+- column: job_position_id
+  description: Job position id.
+  type: integer
+- column: is_early_offer
+  description: True if the candidate received the job offer before the usual time.
+  type: boolean
+- column: number_of_interviews
+  description: The number of interviews the candidate has passed.
+  type: integer
+table_description: Time between funnel step-states calculated by candidate funnel
+  instance, location and position
+table_name: times

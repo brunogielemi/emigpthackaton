@@ -1,0 +1,213 @@
+columns:
+- column_name: subsidiary_id
+  data_type: integer
+  description: The ID of the Subsidiary.
+- column_name: subsidiary_name
+  data_type: character varying(65535)
+  description: The name of the Subsidiary.
+- column_name: listing_id
+  data_type: integer
+  description: The ID of the listing.
+- column_name: listing_name
+  data_type: character varying(65535)
+  description: The name of the listing.
+- column_name: candidate_funnel_instance_id
+  data_type: integer
+  description: The id of the candidate funnel instance.
+- column_name: candidate_id
+  data_type: integer
+  description: The ID of the candidate. Ideally, each `candidate` ID represents one
+    real human. This is generated after the candidate finishes its application, so
+    it does not exist in the context of screening conversations.
+- column_name: evaluation_id
+  data_type: integer
+  description: Identifier for the evaluation associated with the interview, also known
+    as assignment_id.
+- column_name: invitation_at
+  data_type: timestamp with time zone
+  description: The timestamp in which an invitation was sent to the candidate.
+- column_name: interview_at
+  data_type: timestamp with time zone
+  description: The timestamp in which the interview is or was scheduled or proposed
+    to begin (does not require acceptance, only invitation).
+- column_name: invitation_sent
+  data_type: boolean
+  description: Indicates whether an invitation for the interview has been sent.
+- column_name: invitation_responded
+  data_type: boolean
+  description: Indicates whether the candidate has responded to the interview invitation.
+- column_name: requisition_is_support
+  data_type: boolean
+  description: Indicates whether the requisition was created by support or not.
+- column_name: interview_confirmed
+  data_type: boolean
+  description: Indicates whether the interview has been confirmed.
+- column_name: interview_assistance
+  data_type: boolean
+  description: Indicates whether the candidate has assisted to the interview.
+- column_name: interview_canceled
+  data_type: boolean
+  description: Indicates whether the interview has been canceled.
+- column_name: deactivated_reason
+  data_type: character varying(65535)
+  description: Reason for deactivating the interview.
+- column_name: interview_approval
+  data_type: boolean
+  description: Indicates whether the interview has been approved.
+- column_name: requisition_automatic_assignments
+  data_type: boolean
+  description: Indicates whether assignments for the requisition are automatic.
+- column_name: veredict
+  data_type: character varying(65535)
+  description: Outcome or decision from the interview (approved, rejected).
+- column_name: veredict_rejection_reason
+  data_type: character varying(65535)
+  description: Reason for rejection if the veredict is negative.
+- column_name: veredict_received_at
+  data_type: timestamp with time zone
+  description: Timestamp when the veredict was received.
+- column_name: veredict_received_by_user_id
+  data_type: integer
+  description: The ID of the user that provided the interview verdict.
+- column_name: invitation_accepted
+  data_type: boolean
+  description: Whether the invitation responded by the candidate has been accepted
+    or rejected.
+- column_name: interview_standing
+  data_type: boolean
+  description: Whether an interview was expected to take place because it was previously
+    confirmed and did not get canceled, or not.
+- column_name: interview_standing_in_future
+  data_type: boolean
+  description: Whether the interview that was expected to take place is scheduled
+    for some point in the future (is expected to take place), or not.
+- column_name: interview_standing_in_past_without_feedback
+  data_type: boolean
+  description: Whether the interview that was expected to take place was scheduled
+    for some moment in the past and currently lacks feedback from interviewer, or
+    not.
+- column_name: assignment_created_at
+  data_type: timestamp with time zone
+  description: Timestamp when the assignment was created.
+- column_name: position_id
+  data_type: integer
+  description: Identifier for the position associated with the requisition of candidates.
+- column_name: is_active
+  data_type: boolean
+  description: Whether the deactivated reason is null or not manually deactivated.
+- column_name: requisition_created_by_user_id
+  data_type: integer
+  description: The user ID that created the requisition.
+- column_name: assignment_created_by_user_id
+  data_type: integer
+  description: The user ID that created the assignment.
+- column_name: user_id
+  data_type: integer
+  description: The ID of the user.
+- column_name: subsidiary_location_id
+  data_type: integer
+  description: The ID of the Subsidiary Location.
+- column_name: working_place_name
+  data_type: character varying(65535)
+  description: 'Name of the working place (Subsidiary Location). The assignment is
+    made by picking the first not null value from this list: 1. The working place
+    defined manually by a user through the BO after the previous manual assignment
+    2. The working place defined manually by a user through the BO, if not, 3. The
+    working place defined by the Interview service​.'
+- column_name: working_place_region
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Región'. Matched case insensitive
+    without accents.
+- column_name: working_place_province
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Provincia'. Matched case insensitive
+    without accents.
+- column_name: working_place_plaza
+  data_type: character varying(65535)
+  description: Value of subsidiary location tags 'Plaza', 'Colonia' and 'Cluster'.
+    Matched case insensitive without accents.
+- column_name: working_place_city
+  data_type: character varying(65535)
+  description: Value of subsidiary location tags 'City' and 'Ciudad'. Matched case
+    insensitive without accents.
+- column_name: working_place_division
+  data_type: character varying(65535)
+  description: Value of subsidiary location tags 'División' and 'Célula'. Matched
+    case insensitive without accents.
+- column_name: working_place_field
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Campo'. Matched case insensitive
+    without accents.
+- column_name: working_place_site
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Site'. Matched case insensitive without
+    accents.
+- column_name: working_place_state
+  data_type: character varying(65535)
+  description: Value of subsidiary location tags 'Estado' and 'State'. Matched case
+    insensitive without accents.
+- column_name: working_place_zone
+  data_type: character varying(65535)
+  description: Value of subsidiary location tags 'Zona', 'Zone' and 'Municipio'. Matched
+    case insensitive without accents.
+- column_name: working_place_market
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Mercado'. Matched case insensitive
+    without accents.
+- column_name: working_place_format
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Formato'. Matched case insensitive
+    without accents.
+- column_name: working_place_zipcode
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Zipcode'. Matched case insensitive
+    without accents.
+- column_name: working_place_category
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Categoría'. Matched case insensitive
+    without accents.
+- column_name: working_place_type
+  data_type: character varying(65535)
+  description: Value of subsidiary location tags 'caracteristica_operacion', 'Unidad
+    de Negocio', 'Tipo de Sucursal' and 'Tipo Sucursal'. Matched case insensitive
+    without accents.
+- column_name: position_name
+  data_type: character varying(65535)
+  description: Name of the requisition's position.
+- column_name: position_first_hierarchy
+  data_type: character varying(65535)
+  description: The first hierarchy of the position currently assigned to the candidate
+    in this listing.
+- column_name: position_second_hierarchy
+  data_type: character varying(65535)
+  description: The second hierarchy of the position currently assigned to the candidate.
+- column_name: position_third_hierarchy
+  data_type: character varying(65535)
+  description: The third hierarchy of the position currently assigned to the candidate.
+- column_name: position_fourth_hierarchy
+  data_type: character varying(65535)
+  description: The fourth hierarchy of the position currently assigned to the candidate.
+- column_name: hired_at
+  data_type: timestamp with time zone
+  description: Timestamp when the candidate was hired.
+- column_name: applied_at
+  data_type: timestamp with time zone
+  description: Timestamp when the candidate applied.
+- column_name: interview_invitation
+  data_type: boolean
+  description: Flag for candidates to be considered in the Interview Invitations KPIs
+    metric.
+- column_name: interview_scheduled
+  data_type: boolean
+  description: Flag for candidates to be considered in the Scheduled Interviews KPIs
+    metric.
+- column_name: interview_assistance_rate
+  data_type: boolean
+  description: Flag for candidates to be considered in the Assistance Rate metric
+    denominator.
+- column_name: interview_approval_rate
+  data_type: boolean
+  description: Flag for candidates to be considered in the Approval Rate metric denominator.
+table_description: Table with candidate interview's service fields for metrics of
+  interviews created with Emi, by candidate funnel instance, location and position
+table_name: interviews

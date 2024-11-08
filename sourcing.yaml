@@ -1,0 +1,510 @@
+columns:
+- column: subsidiary_id
+  description: The ID of the Subsidiary.
+  type: integer
+- column: subsidiary_name
+  description: The name of the Subsidiary.
+  type: character varying(65535)
+- column: listing_id
+  description: The ID of the listing.
+  type: integer
+- column: listing_name
+  description: The name of the listing.
+  type: character varying(65535)
+- column: listing_type
+  description: The type of the listing.
+  type: character varying(65535)
+- column: application_date
+  description: The date at which the candidate applied. This is usually the timestamp
+    of the application creation (`candidate.applications.created_at`), casted to date
+    format.
+  type: timestamp with time zone
+- column: candidate_application_date
+  description: Date considered as application date in the backoffice. This is updated
+    if the candidate continues the conversation after the creation of the application.
+  type: timestamp without time zone
+- column: hired_date
+  description: '`Hired_at` column truncated to date.'
+  type: date
+- column: entry_date
+  description: The entry date of the candidate. This is usually loaded by the recruiter
+    and it's stored in the question indexes `entry_datetime` or `entry_date_time`.
+  type: date
+- column: candidate_channel_id
+  description: The identifier for the channel by which a candidate talks to emi, a
+    candidate can have more than one channel (whatsapp, facebook, etc).
+  type: integer
+- column: n_candidate_id
+  description: 'A composed identifier for candidates before Screening (where the Candidate
+    ID is created). It''s created as follows: 1. First, if the candidate already has
+    an ID, it''s equal to the Candidate ID. 2. Otherwise, if the Candidate Channel
+    ID is already associated with a Candidate ID, we use that Candidate ID. 3. Finally,
+    if we can''t associate a Candidate ID with the conversation we use a concatenation
+    of `C` plus the Candidate Channel ID.'
+  type: character varying(12)
+- column: personal_id
+  description: A way to identify candidates who don't have candidate_id. It is a coalesce
+    between document, email and mobile from the candidate.
+  type: character varying(65535)
+- column: candidate_id
+  description: The ID of the candidate. Ideally, each `candidate` ID` represents one
+    real human. This is generated after the candidate finishes its application, so
+    it does not exist in the context of screening conversations.
+  type: integer
+- column: listing_candidate_id
+  description: ID from the table `candidate.listing_candidates`. It's a unique ID
+    to represent the combination candidate - listing. With the Reapplications feature,
+    there is no longer a unique relation between those entities, so it should be deprecated
+    when the migration to Candidate Funnel Instances is completed.
+  type: integer
+- column: candidate_name
+  description: The name of the candidate. It is stored in the question index `name_logic`.
+  type: character varying(65535)
+- column: candidate_zip_code
+  description: Candidate's residency zipcode.
+  type: character varying(65535)
+- column: candidate_city
+  description: Candidate's residency city.
+  type: character varying(65535)
+- column: candidate_state
+  description: Candidate's residency state.
+  type: character varying(65535)
+- column: experience_salary
+  description: Candidate's experience salary.
+  type: character varying(65535)
+- column: talent_has_disability
+  description: Indicates whether the candidate has a disability.
+  type: character varying(65535)
+- column: is_working
+  description: Indicates whether the candidate is currently employed.
+  type: character varying(65535)
+- column: availability_shifting
+  description: 'Candidate''s self-reported availability shifting, based on the following
+    question indexes: * `working_hours_roll_shifts_n` * `working_hours_roll_shifts`
+    * `working_shifts_ok` * `working_roll_shifts_operario` * `working_roll_shifts_vendedor`.'
+  type: character varying(19)
+- column: working_hours_days
+  description: Candidate's availability to shift working hours.
+  type: character varying(65535)
+- column: education
+  description: 'This is a calculated column based on the self-reported education level
+    of the candidate. It is based on the following question indexes: * `education_attendance`
+    * `education_level` * `education_licenciatura` * `education_prepa` * `education_secondary`.'
+  type: character varying(65535)
+- column: education_level_text
+  type: character varying(65535)
+- column: candidate_phone
+  description: The phone of the candidate.
+  type: character varying(65535)
+- column: candidate_email
+  description: The email from the candidate.
+  type: character varying(65535)
+- column: candidate_location
+  description: Location indicated by the candidate in the conversation.
+  type: character varying(65535)
+- column: candidate_funnel_instance_id
+  type: integer
+- column: started_screening_at
+  description: Timestamp at which the candidate started the screening conversation.
+    It does not apply to candidates who applied through other means as forms or walkers.
+  type: timestamp with time zone
+- column: applied
+  description: Indicates whether the candidate has applied.
+  type: boolean
+- column: started_screening
+  description: Indicates whether the candidate's screening process has started.
+  type: boolean
+- column: completed_screening
+  description: Indicates whether the candidate's screening process has been completed.
+  type: boolean
+- column: pending_screening_evaluation_at
+  description: Timestamp at which the candidate is ready for Descartes. For an organic
+    candidate it is when the conversation ends and is interested, and for a manual
+    candidate it is when it is loaded.
+  type: timestamp with time zone
+- column: pending_screening_evaluation
+  description: Indicates whether the candidate is ready for Descartes.
+  type: boolean
+- column: passed_screening
+  description: Indicates whether the candidate passed the screening.
+  type: boolean
+- column: passed_first_interview_step
+  description: Indicates whether the candidate passed the first interview step.
+  type: boolean
+- column: hired
+  description: Indicates whether the candidate has been hired.
+  type: boolean
+- column: working_place_id
+  description: 'ID of the working place (Subsidiary Location). The assignment is made
+    by picking the first not null value from this list: 1. The working place defined
+    manually by a user through the BO after the previous manual assignment 2. The
+    working place defined manually by a user through the BO, if not, 3. The working
+    place defined by the Interview service.'
+  type: integer
+- column: working_place_name
+  description: 'Name of the working place (Subsidiary Location). The assignment is
+    made by picking the first not null value from this list: 1. The working place
+    defined manually by a user through the BO after the previous manual assignment
+    2. The working place defined manually by a user through the BO, if not, 3. The
+    working place defined by the Interview service.'
+  type: character varying(65535)
+- column: working_place_region
+  description: Value of subsidiary location tag 'Región'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_province
+  description: Value of subsidiary location tag 'Provincia'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_plaza
+  description: Value of subsidiary location tags 'Plaza', 'Colonia' and 'Cluster'.
+    Matched case insensitive without accents.
+  type: character varying(65535)
+- column: working_place_city
+  description: Value of subsidiary location tags 'City' and 'Ciudad'. Matched case
+    insensitive without accents.
+  type: character varying(65535)
+- column: working_place_division
+  description: Value of subsidiary location tags 'División' and 'Célula'. Matched
+    case insensitive without accents.
+  type: character varying(65535)
+- column: working_place_field
+  description: Value of subsidiary location tag 'Campo'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_site
+  description: Value of subsidiary location tag 'Site'. Matched case insensitive without
+    accents.
+  type: character varying(65535)
+- column: working_place_state
+  description: Value of subsidiary location tags 'Estado' and 'State'. Matched case
+    insensitive without accents.
+  type: character varying(65535)
+- column: working_place_zone
+  description: Value of subsidiary location tags 'Zona', 'Zone' and 'Municipio'. Matched
+    case insensitive without accents.
+  type: character varying(65535)
+- column: working_place_market
+  description: Value of subsidiary location tag 'Mercado'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_format
+  description: Value of subsidiary location tag 'Formato'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_zipcode
+  description: Value of subsidiary location tag 'Zipcode'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_category
+  description: Value of subsidiary location tag 'Categoría'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: working_place_type
+  description: Value of subsidiary location tags 'caracteristica_operacion', 'Unidad
+    de Negocio', 'Tipo de Sucursal' and 'Tipo Sucursal'. Matched case insensitive
+    without accents.
+  type: character varying(65535)
+- column: applied_position_id
+  description: The ID of the position to which the candidate applied. This ID is stored
+    in the question index `applied_position_id` of the candidate data and is usually
+    part of the `eref2`.
+  type: integer
+- column: applied_position_name
+  description: The name of the position to which the candidate applied.
+  type: character varying(65535)
+- column: applied_position_first_hierarchy
+  description: The first hierarchy of the position to which the candidate applied.
+  type: character varying(65535)
+- column: applied_position_second_hierarchy
+  description: The second hierarchy of the position to which the candidate applied.
+  type: character varying(65535)
+- column: applied_position_third_hierarchy
+  description: The third hierarchy of the position to which the candidate applied.
+  type: character varying(65535)
+- column: applied_position_fourth_hierarchy
+  description: The fourth hierarchy of the position to which the candidate applied.
+  type: character varying(65535)
+- column: current_position_id
+  description: 'The ID of the position currently assigned to the candidate in this
+    listing. The assignment is made by picking the first not null value from this
+    list: 1. Question index `new_manually_assigned_job_position_id` (the position
+    manually defined by a user through the BO after the previous manual assignment)
+    2. Question index `manually_assigned_job_position_id` (the position manually defined
+    by a user through the BO) 3. Question index `assigned_job_position_id` (the position
+    defined by the Interview service) 4. Question index `job_position_id`. Note that
+    this question index usually stores a **list** of IDs. When this is the first not-null
+    value, we say that the candidate has multiple current job positions, and each
+    cell of this column will store one of those IDs. (the position defined by the
+    Descartes service) 5. Question index `applied_job_position_id` (the position for
+    which the candidate applied (eref2)).'
+  type: integer
+- column: current_position_name
+  description: The name of the position currently assigned to the candidate in this
+    listing.
+  type: character varying(65535)
+- column: current_position_first_hierarchy
+  description: The first hierarchy of the position currently assigned to the candidate
+    in this listing.
+  type: character varying(65535)
+- column: current_position_second_hierarchy
+  description: The second hierarchy of the position currently assigned to the candidate
+    in this listing.
+  type: character varying(65535)
+- column: current_position_third_hierarchy
+  description: The third hierarchy of the position currently assigned to the candidate
+    in this listing.
+  type: character varying(65535)
+- column: current_position_fourth_hierarchy
+  description: The fourth hierarchy of the position currently assigned to the candidate
+    in this listing.
+  type: character varying(65535)
+- column: source
+  description: Original source of the application, coming from the eref2.
+  type: character varying(255)
+- column: attributed_source
+  description: The attributed_source column description.
+  type: character varying(1153)
+- column: attributed_source_es
+  description: Spanish translation of the attributed source.
+  type: character varying(1345)
+- column: attributed_source_subsource
+  description: Combination of source_standard_es and subsource_standard_es used as
+    the standard source shown in analytics (in spanish).
+  type: character varying(769)
+- column: attributed_source_subsource_es
+  description: Spanish translation of the combination of the attributed source and
+    subsource.
+  type: character varying(769)
+- column: source_standard
+  description: Application's standardized source.
+  type: character varying(255)
+- column: subsource_standard
+  description: Application's standardized subsource.
+  type: character varying(255)
+- column: source_standard_es
+  description: Application's standardized source translated to spanish.
+  type: character varying(255)
+- column: subsource_standard_es
+  description: Application's standardized subsource translated to spanish.
+  type: character varying(255)
+- column: standard_source_category
+  description: Application's standard source category.
+  type: character varying(256)
+- column: standard_source_category_es
+  description: Application's standard source category in spanish.
+  type: character varying(256)
+- column: reference
+  description: Application's reference information.
+  type: character varying(255)
+- column: reference_extra
+  description: Application's reference extra information.
+  type: character varying(511)
+- column: application_channel
+  description: The channel from which de application comes from, using only the channel
+    from the eref2.
+  type: character varying(65535)
+- column: application_channel_enriched
+  description: Combined channel from eref2, motion and reference field, for manual
+    channels it is also combined with the builder from the eref2.
+  type: character varying(65535)
+- column: application_channel_enriched_es
+  description: Combined channel from eref2, motion and reference field, for manual
+    channels it is also combined with the builder translated to spanish from the eref2.
+  type: character varying(65535)
+- column: application_builder_enriched
+  description: Translation for application builders. Uses mainly builder from eref2,
+    reference for cases where we didn't save builder in eref2 and job_posting_publication_id
+    for automatic job postings.
+  type: character varying(255)
+- column: referrer_code
+  description: Code associated with the referrer of the candidate.
+  type: character varying(255)
+- column: referrer_type
+  description: Type of referrer (candidate, employee, recruiter).
+  type: character varying(255)
+- column: referrer_channel_user_id
+  description: The channel user id from the referrer.
+  type: integer
+- column: referrer_is_incentivized
+  description: Indicates whether the referrer is rewarded when referring.
+  type: boolean
+- column: referrer_employee_id
+  description: Employee ID associated with the referrer.
+  type: character varying(65535)
+- column: referrer_format
+  description: Format of the referrer related to specific client's locations (Walmart).
+  type: character varying(65535)
+- column: referrer_determinant
+  description: Determinant of the referrer related to specific client's locations
+    (Walmart).
+  type: character varying(65535)
+- column: referrer_plaza
+  description: Plaza of the referrer related to specific client's locations (Farmacias
+    del Ahorro).
+  type: character varying(65535)
+- column: referrer_brand
+  description: Brand associated with the referrer (Alsea).
+  type: character varying(65535)
+- column: referrer_mail
+  type: character varying(65535)
+- column: referrer_phone_number
+  type: character varying(65535)
+- column: payroll_number
+  description: External ID associated with the candidate (used by Oxxo, Danone, Nemak).
+  type: integer
+- column: assigned_user_email
+  description: 'Email of the assigned user. Here we define the assignment picking
+    the first ID that is not null, in the following order: 1. The ID found in the
+    question index `assigned_user_id` of the candidate''s data. 2. The ID found in
+    the question index `interview_user_id` of the candidate''s data.'
+  type: character varying(65535)
+- column: assigned_vacancy_coordinator_email
+  description: The email from the coordinator of the vacancy.
+  type: character varying(65535)
+- column: assigned_vacancy_advisor_email
+  type: character varying(65535)
+- column: referrer_working_place_id
+  type: integer
+- column: referrer_working_place_name
+  type: character varying(65535)
+- column: referrer_working_place_format
+  type: character varying(65535)
+- column: referrer_working_place_plaza
+  description: Plaza related to the referrer's working place id.
+  type: character varying(65535)
+- column: referrer_working_place_region
+  description: Region related to the referrer's working place id.
+  type: character varying(65535)
+- column: referrer_working_place_type
+  description: Type related to the referrer's working place id.
+  type: character varying(65535)
+- column: referrer_working_place_state
+  description: State related to the referrer's working place id.
+  type: character varying(65535)
+- column: referrer_working_place_city
+  description: City related to the referrer's working place id.
+  type: character varying(65535)
+- column: referrer_working_place_zone
+  description: Zone related to the referrer's working place id.
+  type: character varying(65535)
+- column: outbound_medium
+  description: Medium used for outbound communication (email, whatsapp, sms, facebook,
+    etc).
+  type: character varying(255)
+- column: outbound_origin
+  description: Origin of the outbound communication (ATS, recruiter).
+  type: character varying(255)
+- column: campaign_name
+  description: Name of the sourcing campaign.
+  type: character varying(255)
+- column: campaign_type
+  description: Type of the sourcing campaign.
+  type: character varying(255)
+- column: customer_campaign_name
+  description: Client's customized name of the sourcing campaign.
+  type: character varying(255)
+- column: application_builder
+  description: Tool by which the application link was created found in eref2.
+  type: character varying(255)
+- column: link_id
+  description: ID associated with the link.
+  type: integer
+- column: last_funnel_stage
+  description: Candidate's last stage (step - state) in the funnel.
+  type: character varying(65535)
+- column: last_step_id
+  description: Last step_id from candidate_steps for a specific candidate.
+  type: integer
+- column: last_step_name
+  description: Last step name from candidate_steps for a specific candidate.
+  type: character varying(65535)
+- column: last_state_name
+  description: Last state from candidate_steps for a specific candidate and step.
+  type: character varying(65535)
+- column: last_step_type
+  description: Last step type from candidate_steps for a specific candidate.
+  type: character varying(65535)
+- column: attributed_source_subsource_custom
+  description: Combination of source_custom and subsource_custom from customizations
+    by subsidiary from custom_sourcing_subsidiary seed.
+  type: character varying(515)
+- column: source_filter_en
+  description: English source filter for the Sourcing Standard Dashboard, it uses
+    the custom source of a client and if it is null the standard one.
+  type: character varying(256)
+- column: source_filter_es
+  description: Spanish source filter for the Sourcing Standard Dashboard, it uses
+    the custom source of a client and if it is null the standard one.
+  type: character varying(256)
+- column: referrer_name
+  description: Name of the referrer.
+  type: character varying(65535)
+- column: assigned_user_name
+  description: 'Name of the assigned user. Here we define the assignment picking the
+    first ID that is not null, in the following order: 1. The ID found in the question
+    index `assigned_user_id` of the candidate''s data. 2. The ID found in the question
+    index `interview_user_id` of the candidate''s data.'
+  type: character varying(65535)
+- column: attracted_by_user_id
+  description: User ID of the person who attracted the candidate (emiUserId).
+  type: integer
+- column: hire_user_id
+  description: User id responsible of the hire, considering user ids from all the
+    funnel in order by user who moves candidate to hire to user who attracted.
+  type: numeric(18,0)
+- column: job_matching_sourcer_subsidiary_id
+  description: In the Job Matching feature, the Sourcer is the client to whom we attribute
+    the candidate in the eref2's sourcerSubsidiaryId key. This feature involves inviting
+    candidates in eligible states of our clients' funnels to apply for positions with
+    other clients. The Sourcer is the client we credit with attracting that candidate.
+  type: integer
+- column: job_matching_initiative
+  description: Name of the campaign in the Job Matching feature. It also comes in
+    the eref2, under the key 'type'.
+  type: character varying(256)
+- column: assigned_recruitment_team
+  description: Team assigned to the recruitment.
+  type: character varying(65535)
+- column: assigned_analog_user_email
+  description: Email from the user that inserts the analog candidate.
+  type: character varying(65535)
+- column: job_matching_sourced_at
+  description: In the Job Matching feature position recommendations are made to the
+    candidate along with links to apply. This timestamp represents when that recommendation
+    was made. It should be less than a few seconds apart from `job_matching.recommendation_attempts.created_at`
+    of the rows that match the Candidate ID.
+  type: timestamp with time zone
+- column: job_matching_candidate_id
+  description: In the Job Matching feature we recommend positions to certain eligible
+    candidates. In the event they follow our recommendation and apply, this column
+    will contain the Candidate ID that the candidate had in the Sourcer Client funnel.
+  type: integer
+- column: job_matching_eligibility_source
+  description: In the Job Matching feature we source candidates from other Emi listings.
+    This field divides the Job Matching candidates in categories by the original source
+    they had in the listing from which we sourced them.
+  type: character varying(22)
+- column: last_interest_revalidation_date
+  description: The date at which the candidate revalidates interest in the application.
+  type: date
+- column: source_subsource_analytics
+  description: Combined customized source-subsource with standard source-subsource
+    in case no customization exists.
+  type: character varying(769)
+- column: source_subsource_analytics_es
+  description: Combined customized source-subsource with standard source-subsource
+    in case no customization exists for dashboards in spanish.
+  type: character varying(769)
+- column: working_place_id_order
+  description: The position of the specific working place id in the current_working_place_ids
+    array.
+  type: bigint
+- column: assigned_vacancy_requester_user_email
+  description: The email from the coordinator of the vacancy.
+  type: character varying(65535)
+- column: application_rank
+  type: character varying(65535)
+table_description: Applications with their source attributions, references and funnel
+  events by candidate funnel instance, locations and positions
+table_name: sourcing

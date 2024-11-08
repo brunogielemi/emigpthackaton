@@ -1,0 +1,144 @@
+columns:
+- column_name: subsidiary_id
+  data_type: integer
+  description: The ID of the Subsidiary.
+- column_name: subsidiary_name
+  data_type: character varying(65535)
+  description: The name of the Subsidiary.
+- column_name: listing_id
+  data_type: integer
+  description: The ID of the listing.
+- column_name: listing_name
+  data_type: character varying(65535)
+  description: The name of the listing.
+- column_name: candidate_id
+  data_type: integer
+  description: The ID of the candidate. Ideally, each `candidate` ID` represents one
+    real human. This is generated after the candidate finishes its application, so
+    it does not exist in the context of screening conversations.
+- column_name: candidate_funnel_instance_id
+  data_type: integer
+  description: The id of the candidate funnel instance.
+- column_name: state
+  data_type: character varying(256)
+  description: The state of the entity represented by the row.
+- column_name: created_at
+  data_type: timestamp with time zone
+  description: Timestamp of the record creation.
+- column_name: application_date
+  data_type: date
+  description: The date at which the candidate applied. This is usually the timestamp
+    of the application creation (`candidate.applications.created_at`), casted to date
+    format.
+- column_name: available_for_interview_at
+  data_type: timestamp with time zone
+  description: Timestamp at which the candidate entered the Talent Pool. Column only
+    valid for candidates who are currently in the Talent Pool.
+- column_name: working_place_id
+  data_type: integer
+  description: 'ID of the working place (Subsidiary Location). The assignment is made
+    by picking the first not null value from this list: 1. The working place defined
+    manually by a user through the BO after the previous manual assignment 2. The
+    working place defined manually by a user through the BO, if not, 3. The working
+    place defined by the Interview service.'
+- column_name: working_place_name
+  data_type: character varying(65535)
+  description: 'Name of the working place (Subsidiary Location). The assignment is
+    made by picking the first not null value from this list: 1. The working place
+    defined manually by a user through the BO after the previous manual assignment
+    2. The working place defined manually by a user through the BO, if not, 3. The
+    working place defined by the Interview service​.'
+- column_name: working_place_region
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Región'. Matched case insensitive
+    without accents.
+- column_name: working_place_province
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Provincia'. Matched case insensitive
+    without accents.
+- column_name: working_place_plaza
+  data_type: character varying(65535)
+  description: Value of subsidiary location tags 'Plaza', 'Colonia' and 'Cluster'.
+    Matched case insensitive without accents.
+- column_name: working_place_city
+  data_type: character varying(65535)
+  description: Value of subsidiary location tags 'City' and 'Ciudad'. Matched case
+    insensitive without accents.
+- column_name: working_place_division
+  data_type: character varying(65535)
+  description: Value of subsidiary location tags 'División' and 'Célula'. Matched
+    case insensitive without accents.
+- column_name: working_place_field
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Campo'. Matched case insensitive
+    without accents.
+- column_name: working_place_site
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Site'. Matched case insensitive without
+    accents.
+- column_name: working_place_state
+  data_type: character varying(65535)
+  description: Value of subsidiary location tags 'Estado' and 'State'. Matched case
+    insensitive without accents.
+- column_name: working_place_zone
+  data_type: character varying(65535)
+  description: Value of subsidiary location tags 'Zona', 'Zone' and 'Municipio'. Matched
+    case insensitive without accents.
+- column_name: working_place_market
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Mercado'. Matched case insensitive
+    without accents.
+- column_name: working_place_format
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Formato'. Matched case insensitive
+    without accents.
+- column_name: working_place_zipcode
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Zipcode'. Matched case insensitive
+    without accents.
+- column_name: working_place_type
+  data_type: character varying(65535)
+  description: Value of subsidiary location tags 'caracteristica_operacion', 'Unidad
+    de Negocio', 'Tipo de Sucursal' and 'Tipo Sucursal'. Matched case insensitive
+    without accents.
+- column_name: working_place_category
+  data_type: character varying(65535)
+  description: Value of subsidiary location tag 'Categoría'. Matched case insensitive
+    without accents.
+- column_name: current_position_id
+  data_type: integer
+  description: 'The ID of the position currently assigned to the candidate in this
+    listing. The assignment is made by picking the first not null value from this
+    list: 1. Question index `new_manually_assigned_job_position_id` (the position
+    manually defined by a user through the BO after the previous manual assignment)
+    2. Question index `manually_assigned_job_position_id` (the position manually defined
+    by a user through the BO) 3. Question index `assigned_job_position_id` (the position
+    defined by the Interview service) 4. Question index `job_position_id`. Note that
+    this question index usually stores a **list** of IDs. When this is the first not-null
+    value, we say that the candidate has multiple current job positions, and each
+    cell of this column will store one of those IDs. (the position defined by the
+    Descartes service) 5. Question index `applied_job_position_id` (the position for
+    which the candidate applied (eref2)).'
+- column_name: current_position_name
+  data_type: character varying(65535)
+  description: The name of the position currently assigned to the candidate in this
+    listing.
+- column_name: current_position_first_hierarchy
+  data_type: character varying(65535)
+  description: The first hierarchy of the position currently assigned to the candidate
+    in this listing.
+- column_name: current_position_second_hierarchy
+  data_type: character varying(65535)
+  description: The second hierarchy of the position currently assigned to the candidate
+    in this listing.
+- column_name: current_position_third_hierarchy
+  data_type: character varying(65535)
+  description: The third hierarchy of the position currently assigned to the candidate
+    in this listing.
+- column_name: current_position_fourth_hierarchy
+  data_type: character varying(65535)
+  description: The fourth hierarchy of the position currently assigned to the candidate
+    in this listing.
+table_description: Table with Interview steps with type DESCARTES or MANUAL for metrics
+  of interviews created outside Emi by candidate funnel instance, location and position.
+table_name: manual_interviews
