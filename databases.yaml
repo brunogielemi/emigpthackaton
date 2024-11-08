@@ -2,7 +2,7 @@ databases:
   - name: "warehouse"
     prefix: "WAREHOUSE"
     description: "Always use this database. Use the obt schema. When matching strings of names always use ilike. Use last month by default.
-    When you're asked questions about candidates / applications / applicants, look for the information in obt.sourcing.
+    When you're asked questions about applications / applicants, look for the information in obt.sourcing.
     When you're asked questions about hires (or hired candidates), look for the information in obt.hires.
     When you're asked questions about a candidate's status or where a candidate is in the process, look for the information in obt.last_step_states."
     urls:
