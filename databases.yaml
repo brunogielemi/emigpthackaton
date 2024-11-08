@@ -1,7 +1,7 @@
 databases:
   - name: "warehouse"
     prefix: "WAREHOUSE"
-    description: "Always use this database. Use the obt schema. When matching strings of names always use ilike. Use last month by default.
+    description: "Always use this database. Use the obt schema. Use last month by default.
     When you're asked questions about applications / applicants / attraction / candidates (and not hired), look for the information in obt.sourcing.
     When you're asked questions about hires, look for the information in obt.hires.
     When you're asked about a source, use source_standard_es || ' - ' || subsource_standard_es."
