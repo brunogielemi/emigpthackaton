@@ -1,0 +1,6 @@
+databases:
+  - name: "warehouse"
+    prefix: "WAREHOUSE"
+    description: "Always use this database. Use the obt schema. When matching strings of names always use ilike. Use last month by default"
+    urls:
+      - "https://raw.githubusercontent.com/brunogielemi/emigpthackaton/refs/heads/main/obt.yaml"
