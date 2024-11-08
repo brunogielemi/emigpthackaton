@@ -1,0 +1,2976 @@
+version: 2
+
+models:
+- name: hires
+  description: Hires by candidate funnel instance, location and position
+  columns:
+  - name: listing_id
+    data_type: integer
+    description: The ID of the listing.
+    tests:
+    - not_null
+  - name: listing_name
+    data_type: character varying(65535)
+    description: The name of the listing.
+    tests:
+    - not_null
+  - name: subsidiary_id
+    data_type: integer
+    description: The ID of the Subsidiary.
+    tests:
+    - not_null
+  - name: subsidiary_name
+    data_type: character varying(65535)
+    description: The name of the Subsidiary.
+    tests:
+    - not_null
+  - name: candidate_id
+    data_type: integer
+    description: The ID of the candidate. Ideally, each `candidate` ID represents
+      one real human. This is generated after the candidate finishes its application,
+      so it does not exist in the context of screening conversations.
+    tests:
+    - not_null
+  - name: candidate_funnel_instance_id
+    data_type: integer
+    description: The ID of the candidate funnel instance.
+    tests:
+    - not_null
+  - name: listing_candidate_id
+    data_type: integer
+    description: ID from the table `candidate.listing_candidates`. It's a unique ID
+      to represent the combination candidate - listing. With the Reapplications feature,
+      there is no longer a unique relation between those entities, so it should be
+      deprecated when the migration to Candidate Funnel Instances is completed.
+    tests:
+    - not_null
+  - name: hired_by_var
+    data_type: boolean
+    description: Flag indicating whether the candidate was hired due to the hire verification
+      check or not.
+    tests:
+    - not_null
+  - name: manually_advanced_steps
+    data_type: boolean
+    description: Represents if the candidate has advanced any steps in the funnel
+      in a non-organical way. For example, through candidate action or support.
+    tests:
+    - not_null
+  - name: manually_advanced_steps_source
+    data_type: character varying(65535)
+    description: Source of manually advanced steps, if applicable.
+    tests:
+    - not_null
+  - name: curp
+    data_type: character varying(65535)
+    description: Combination of unique Population Registry Code from Documentation
+      Verification step and conversation with candidate.
+    tests:
+    - not_null
+  - name: candidate_referral
+    data_type: character varying(65535)
+    description: The referral of the candidate.
+    tests:
+    - not_null
+  - name: applied_at
+    data_type: timestamp with time zone
+    description: Timestamp indicating when the candidate applied.
+    tests:
+    - not_null
+  - name: started_screening_at
+    data_type: timestamp with time zone
+    description: Timestamp at which the candidate started the screening conversation.
+      It does not apply to candidates who applied through other means as forms or
+      walkers.
+    tests:
+    - not_null
+  - name: completed_screening_at
+    data_type: timestamp with time zone
+    description: Timestamp indicating when the screening process was completed.
+    tests:
+    - not_null
+  - name: interview_at
+    data_type: timestamp with time zone
+    description: The timestamp in which the interview is or was scheduled or proposed
+      to begin (does not require acceptance, only invitation).
+    tests:
+    - not_null
+  - name: hired_at
+    data_type: date
+    description: 'Timestamp at which the candidate was hired. It usually consists
+      of the timestamp of the movement of the candidate to a hired step, but it can
+      be overwritten with the following information: 1. Clients with the Entry Date
+      feature: the entry date of the candidate at work, provided by the client in
+      the BO. 2. Candidates manually advanced to the hired step: with a hire date
+      provided by the client or support.'
+    tests:
+    - not_null
+  - name: step_hired_at
+    data_type: timestamp with time zone
+    description: Timestamp indicating when the candidate reaches the hire step, without
+      considering the entry date.
+    tests:
+    - not_null
+  - name: hire_rank
+    data_type: bigint
+    description: Rank of the hire for a candidate | listing combination.
+    tests:
+    - not_null
+  - name: hire_user_id
+    data_type: numeric(18,0)
+    description: User id responsible for the hire, considering user ids from all the
+      funnel in order by user who moves candidate to hire to user who attracted.
+    tests:
+    - not_null
+  - name: candidate_name
+    data_type: character varying(65535)
+    description: The name of the candidate. It is stored in the question index `name_logic`.
+    tests:
+    - not_null
+  - name: candidate_email
+    data_type: character varying(65535)
+    description: Email of the candidate.
+    tests:
+    - not_null
+  - name: latitude
+    data_type: numeric(5,2)
+    description: Latitude of the candidate's residence, obtained by sending a request
+      to Google Maps with the self-informed address given by the candidate.
+    tests:
+    - not_null
+  - name: longitude
+    data_type: numeric(5,2)
+    description: Longitude of the candidate's residence, obtained by sending a request
+      to Google Maps with the self-informed address given by the candidate.
+    tests:
+    - not_null
+  - name: gender
+    data_type: character varying(19)
+    description: Gender of the candidate.
+    tests:
+    - not_null
+  - name: age
+    data_type: integer
+    description: Age of the candidate.
+    tests:
+    - not_null
+  - name: age_category
+    data_type: character varying(83)
+    description: Category of age the candidate belongs to.
+    tests:
+    - not_null
+  - name: nationality
+    data_type: character varying(65535)
+    description: Nationality of the candidate.
+    tests:
+    - not_null
+  - name: education
+    data_type: character varying(65535)
+    description: This is a calculated column based on the self-reported education
+      level of the candidate.
+    tests:
+    - not_null
+  - name: salary_monthly
+    data_type: character varying(65535)
+    description: Monthly salary of the candidate.
+    tests:
+    - not_null
+  - name: salary_range
+    data_type: character varying(47)
+    description: Range of salary for the candidate.
+    tests:
+    - not_null
+  - name: experience_time_numeric
+    data_type: numeric(33,0)
+    description: Experience time in months (calculated by all QIs regarding experience
+      time).
+    tests:
+    - not_null
+  - name: has_experience_atc
+    data_type: boolean
+    description: Flag indicating if the candidate has experience in ATC.
+    tests:
+    - not_null
+  - name: has_experience_factory
+    data_type: boolean
+    description: Flag indicating if the candidate has experience in a factory.
+    tests:
+    - not_null
+  - name: has_experience_forklift
+    data_type: boolean
+    description: Flag indicating if the candidate has experience with forklifts.
+    tests:
+    - not_null
+  - name: has_experience_logic
+    data_type: boolean
+    description: Flag indicating if the candidate has experience in logic.
+    tests:
+    - not_null
+  - name: has_experience_pallet_truck
+    data_type: boolean
+    description: Flag indicating if the candidate has experience with pallet trucks.
+    tests:
+    - not_null
+  - name: has_experience_products_rotation_exhibition
+    data_type: boolean
+    description: Flag indicating if the candidate has experience in products rotation
+      and exhibition.
+    tests:
+    - not_null
+  - name: has_experience_sales
+    data_type: boolean
+    description: Flag indicating if the candidate has experience in sales.
+    tests:
+    - not_null
+  - name: has_experience_warehouse_associate
+    data_type: boolean
+    description: Flag indicating if the candidate has experience as a warehouse associate.
+    tests:
+    - not_null
+  - name: has_experience_dinero
+    data_type: boolean
+    description: Flag indicating if the candidate has experience with dinero (money).
+    tests:
+    - not_null
+  - name: has_experience_driving_vehicle
+    data_type: boolean
+    description: Flag indicating if the candidate has experience in driving vehicles.
+    tests:
+    - not_null
+  - name: has_experience_general_assistant
+    data_type: boolean
+    description: Flag indicating if the candidate has experience as a general assistant.
+    tests:
+    - not_null
+  - name: has_experience_money
+    data_type: boolean
+    description: Flag indicating if the candidate has experience with money.
+    tests:
+    - not_null
+  - name: has_experience_production_line
+    data_type: boolean
+    description: Flag indicating if the candidate has experience on a production line.
+    tests:
+    - not_null
+  - name: has_experience_sales_assistant
+    data_type: boolean
+    description: Flag indicating if the candidate has experience as a sales assistant.
+    tests:
+    - not_null
+  - name: has_experience_shift_planner
+    data_type: boolean
+    description: Flag indicating if the candidate has experience as a shift planner.
+    tests:
+    - not_null
+  - name: has_experience_warehouse_laborer
+    data_type: boolean
+    description: Flag indicating if the candidate has experience as a warehouse laborer.
+    tests:
+    - not_null
+  - name: has_experience_workplace_cleaner
+    data_type: boolean
+    description: Flag indicating if the candidate has experience as a workplace cleaner.
+    tests:
+    - not_null
+  - name: has_experience_warehouse_executive
+    data_type: boolean
+    description: Flag indicating if the candidate has experience as a warehouse executive.
+    tests:
+    - not_null
+- name: interviews
+  description: Table with candidate interview's service fields for metrics of interviews
+    created with Emi, by candidate funnel instance, location and position
+  columns:
+  - name: subsidiary_id
+    data_type: integer
+    description: The ID of the Subsidiary.
+    tests:
+    - not_null
+  - name: subsidiary_name
+    data_type: character varying(65535)
+    description: The name of the Subsidiary.
+    tests:
+    - not_null
+  - name: listing_id
+    data_type: integer
+    description: The ID of the listing.
+    tests:
+    - not_null
+  - name: listing_name
+    data_type: character varying(65535)
+    description: The name of the listing.
+    tests:
+    - not_null
+  - name: candidate_funnel_instance_id
+    data_type: integer
+    description: The id of the candidate funnel instance.
+    tests:
+    - not_null
+  - name: candidate_id
+    data_type: integer
+    description: The ID of the candidate. Ideally, each `candidate` ID represents
+      one real human. This is generated after the candidate finishes its application,
+      so it does not exist in the context of screening conversations.
+    tests:
+    - not_null
+  - name: evaluation_id
+    data_type: integer
+    description: Identifier for the evaluation associated with the interview, also
+      known as assignment_id.
+    tests:
+    - not_null
+  - name: invitation_at
+    data_type: timestamp with time zone
+    description: The timestamp in which an invitation was sent to the candidate.
+    tests:
+    - not_null
+  - name: interview_at
+    data_type: timestamp with time zone
+    description: The timestamp in which the interview is or was scheduled or proposed
+      to begin (does not require acceptance, only invitation).
+    tests:
+    - not_null
+  - name: invitation_sent
+    data_type: boolean
+    description: Indicates whether an invitation for the interview has been sent.
+    tests:
+    - not_null
+  - name: invitation_responded
+    data_type: boolean
+    description: Indicates whether the candidate has responded to the interview invitation.
+    tests:
+    - not_null
+  - name: requisition_is_support
+    data_type: boolean
+    description: Indicates whether the requisition was created by support or not.
+    tests:
+    - not_null
+  - name: interview_confirmed
+    data_type: boolean
+    description: Indicates whether the interview has been confirmed.
+    tests:
+    - not_null
+  - name: interview_assistance
+    data_type: boolean
+    description: Indicates whether the candidate has assisted to the interview.
+    tests:
+    - not_null
+  - name: interview_canceled
+    data_type: boolean
+    description: Indicates whether the interview has been canceled.
+    tests:
+    - not_null
+  - name: deactivated_reason
+    data_type: character varying(65535)
+    description: Reason for deactivating the interview.
+    tests:
+    - not_null
+  - name: interview_approval
+    data_type: boolean
+    description: Indicates whether the interview has been approved.
+    tests:
+    - not_null
+  - name: requisition_automatic_assignments
+    data_type: boolean
+    description: Indicates whether assignments for the requisition are automatic.
+    tests:
+    - not_null
+  - name: veredict
+    data_type: character varying(65535)
+    description: Outcome or decision from the interview (approved, rejected).
+    tests:
+    - not_null
+  - name: veredict_rejection_reason
+    data_type: character varying(65535)
+    description: Reason for rejection if the veredict is negative.
+    tests:
+    - not_null
+  - name: veredict_received_at
+    data_type: timestamp with time zone
+    description: Timestamp when the veredict was received.
+    tests:
+    - not_null
+  - name: veredict_received_by_user_id
+    data_type: integer
+    description: The ID of the user that provided the interview verdict.
+    tests:
+    - not_null
+  - name: invitation_accepted
+    data_type: boolean
+    description: Whether the invitation responded by the candidate has been accepted
+      or rejected.
+    tests:
+    - not_null
+  - name: interview_standing
+    data_type: boolean
+    description: Whether an interview was expected to take place because it was previously
+      confirmed and did not get canceled, or not.
+    tests:
+    - not_null
+  - name: interview_standing_in_future
+    data_type: boolean
+    description: Whether the interview that was expected to take place is scheduled
+      for some point in the future (is expected to take place), or not.
+    tests:
+    - not_null
+  - name: interview_standing_in_past_without_feedback
+    data_type: boolean
+    description: Whether the interview that was expected to take place was scheduled
+      for some moment in the past and currently lacks feedback from interviewer, or
+      not.
+    tests:
+    - not_null
+  - name: assignment_created_at
+    data_type: timestamp with time zone
+    description: Timestamp when the assignment was created.
+    tests:
+    - not_null
+  - name: position_id
+    data_type: integer
+    description: Identifier for the position associated with the requisition of candidates.
+    tests:
+    - not_null
+  - name: is_active
+    data_type: boolean
+    description: Whether the deactivated reason is null or not manually deactivated.
+    tests:
+    - not_null
+  - name: requisition_created_by_user_id
+    data_type: integer
+    description: The user ID that created the requisition.
+    tests:
+    - not_null
+  - name: assignment_created_by_user_id
+    data_type: integer
+    description: The user ID that created the assignment.
+    tests:
+    - not_null
+  - name: user_id
+    data_type: integer
+    description: The ID of the user.
+    tests:
+    - not_null
+  - name: subsidiary_location_id
+    data_type: integer
+    description: The ID of the Subsidiary Location.
+    tests:
+    - not_null
+  - name: working_place_name
+    data_type: character varying(65535)
+    description: "Name of the working place (Subsidiary Location). The assignment\
+      \ is made by picking the first not null value from this list: 1. The working\
+      \ place defined manually by a user through the BO after the previous manual\
+      \ assignment 2. The working place defined manually by a user through the BO,\
+      \ if not, 3. The working place defined by the Interview service\u200B."
+    tests:
+    - not_null
+  - name: working_place_region
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tag 'Regi\xF3n'. Matched case insensitive\
+      \ without accents."
+    tests:
+    - not_null
+  - name: working_place_province
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Provincia'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_plaza
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Plaza', 'Colonia' and 'Cluster'.
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_city
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'City' and 'Ciudad'. Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_division
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tags 'Divisi\xF3n' and 'C\xE9lula'.\
+      \ Matched case insensitive without accents."
+    tests:
+    - not_null
+  - name: working_place_field
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Campo'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_site
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Site'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_state
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Estado' and 'State'. Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_zone
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Zona', 'Zone' and 'Municipio'.
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_market
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Mercado'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_format
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Formato'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_zipcode
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Zipcode'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_category
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tag 'Categor\xEDa'. Matched case insensitive\
+      \ without accents."
+    tests:
+    - not_null
+  - name: working_place_type
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'caracteristica_operacion', 'Unidad
+      de Negocio', 'Tipo de Sucursal' and 'Tipo Sucursal'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: position_name
+    data_type: character varying(65535)
+    description: Name of the requisition's position.
+    tests:
+    - not_null
+  - name: position_first_hierarchy
+    data_type: character varying(65535)
+    description: The first hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: position_second_hierarchy
+    data_type: character varying(65535)
+    description: The second hierarchy of the position currently assigned to the candidate.
+    tests:
+    - not_null
+  - name: position_third_hierarchy
+    data_type: character varying(65535)
+    description: The third hierarchy of the position currently assigned to the candidate.
+    tests:
+    - not_null
+  - name: position_fourth_hierarchy
+    data_type: character varying(65535)
+    description: The fourth hierarchy of the position currently assigned to the candidate.
+    tests:
+    - not_null
+  - name: hired_at
+    data_type: timestamp with time zone
+    description: Timestamp when the candidate was hired.
+    tests:
+    - not_null
+  - name: applied_at
+    data_type: timestamp with time zone
+    description: Timestamp when the candidate applied.
+    tests:
+    - not_null
+  - name: interview_invitation
+    data_type: boolean
+    description: Flag for candidates to be considered in the Interview Invitations
+      KPIs metric.
+    tests:
+    - not_null
+  - name: interview_scheduled
+    data_type: boolean
+    description: Flag for candidates to be considered in the Scheduled Interviews
+      KPIs metric.
+    tests:
+    - not_null
+  - name: interview_assistance_rate
+    data_type: boolean
+    description: Flag for candidates to be considered in the Assistance Rate metric
+      denominator.
+    tests:
+    - not_null
+  - name: interview_approval_rate
+    data_type: boolean
+    description: Flag for candidates to be considered in the Approval Rate metric
+      denominator.
+    tests:
+    - not_null
+- name: manual_interviews
+  description: Table with Interview steps with type DESCARTES or MANUAL for metrics
+    of interviews created outside Emi by candidate funnel instance, location and position.
+  columns:
+  - name: subsidiary_id
+    data_type: integer
+    description: The ID of the Subsidiary.
+    tests:
+    - not_null
+  - name: subsidiary_name
+    data_type: character varying(65535)
+    description: The name of the Subsidiary.
+    tests:
+    - not_null
+  - name: listing_id
+    data_type: integer
+    description: The ID of the listing.
+    tests:
+    - not_null
+  - name: listing_name
+    data_type: character varying(65535)
+    description: The name of the listing.
+    tests:
+    - not_null
+  - name: candidate_id
+    data_type: integer
+    description: The ID of the candidate. Ideally, each `candidate` ID` represents
+      one real human. This is generated after the candidate finishes its application,
+      so it does not exist in the context of screening conversations.
+    tests:
+    - not_null
+  - name: candidate_funnel_instance_id
+    data_type: integer
+    description: The id of the candidate funnel instance.
+    tests:
+    - not_null
+  - name: state
+    data_type: character varying(256)
+    description: The state of the entity represented by the row.
+    tests:
+    - not_null
+  - name: created_at
+    data_type: timestamp with time zone
+    description: Timestamp of the record creation.
+    tests:
+    - not_null
+  - name: application_date
+    data_type: date
+    description: The date at which the candidate applied. This is usually the timestamp
+      of the application creation (`candidate.applications.created_at`), casted to
+      date format.
+    tests:
+    - not_null
+  - name: available_for_interview_at
+    data_type: timestamp with time zone
+    description: Timestamp at which the candidate entered the Talent Pool. Column
+      only valid for candidates who are currently in the Talent Pool.
+    tests:
+    - not_null
+  - name: working_place_id
+    data_type: integer
+    description: 'ID of the working place (Subsidiary Location). The assignment is
+      made by picking the first not null value from this list: 1. The working place
+      defined manually by a user through the BO after the previous manual assignment
+      2. The working place defined manually by a user through the BO, if not, 3. The
+      working place defined by the Interview service.'
+    tests:
+    - not_null
+  - name: working_place_name
+    data_type: character varying(65535)
+    description: "Name of the working place (Subsidiary Location). The assignment\
+      \ is made by picking the first not null value from this list: 1. The working\
+      \ place defined manually by a user through the BO after the previous manual\
+      \ assignment 2. The working place defined manually by a user through the BO,\
+      \ if not, 3. The working place defined by the Interview service\u200B."
+    tests:
+    - not_null
+  - name: working_place_region
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tag 'Regi\xF3n'. Matched case insensitive\
+      \ without accents."
+    tests:
+    - not_null
+  - name: working_place_province
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Provincia'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_plaza
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Plaza', 'Colonia' and 'Cluster'.
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_city
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'City' and 'Ciudad'. Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_division
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tags 'Divisi\xF3n' and 'C\xE9lula'.\
+      \ Matched case insensitive without accents."
+    tests:
+    - not_null
+  - name: working_place_field
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Campo'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_site
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Site'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_state
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Estado' and 'State'. Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_zone
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Zona', 'Zone' and 'Municipio'.
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_market
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Mercado'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_format
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Formato'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_zipcode
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Zipcode'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_type
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'caracteristica_operacion', 'Unidad
+      de Negocio', 'Tipo de Sucursal' and 'Tipo Sucursal'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_category
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tag 'Categor\xEDa'. Matched case insensitive\
+      \ without accents."
+    tests:
+    - not_null
+  - name: current_position_id
+    data_type: integer
+    description: 'The ID of the position currently assigned to the candidate in this
+      listing. The assignment is made by picking the first not null value from this
+      list: 1. Question index `new_manually_assigned_job_position_id` (the position
+      manually defined by a user through the BO after the previous manual assignment)
+      2. Question index `manually_assigned_job_position_id` (the position manually
+      defined by a user through the BO) 3. Question index `assigned_job_position_id`
+      (the position defined by the Interview service) 4. Question index `job_position_id`.
+      Note that this question index usually stores a **list** of IDs. When this is
+      the first not-null value, we say that the candidate has multiple current job
+      positions, and each cell of this column will store one of those IDs. (the position
+      defined by the Descartes service) 5. Question index `applied_job_position_id`
+      (the position for which the candidate applied (eref2)).'
+    tests:
+    - not_null
+  - name: current_position_name
+    data_type: character varying(65535)
+    description: The name of the position currently assigned to the candidate in this
+      listing.
+    tests:
+    - not_null
+  - name: current_position_first_hierarchy
+    data_type: character varying(65535)
+    description: The first hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_second_hierarchy
+    data_type: character varying(65535)
+    description: The second hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_third_hierarchy
+    data_type: character varying(65535)
+    description: The third hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_fourth_hierarchy
+    data_type: character varying(65535)
+    description: The fourth hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+- name: obt_funnel
+  description: Candidate's steps and states opened by candidate funnel instance, locations
+    and positions
+  columns:
+  - name: subsidiary_id
+    data_type: integer
+    description: The ID of the Subsidiary.
+    tests:
+    - not_null
+  - name: subsidiary_name
+    data_type: character varying(65535)
+    description: The name of the Subsidiary.
+    tests:
+    - not_null
+  - name: listing_id
+    data_type: integer
+    description: The ID of the listing.
+    tests:
+    - not_null
+  - name: listing_name
+    data_type: character varying(65535)
+    description: The name of the listing.
+    tests:
+    - not_null
+  - name: application_date
+    data_type: date
+    description: The date at which the candidate applied. This is usually the timestamp
+      of the application creation (`candidate.applications.created_at`), casted to
+      date format.
+    tests:
+    - not_null
+  - name: funnel_created_at
+    data_type: timestamp with time zone
+    description: Timestamp at which the step - state combination occurred
+    tests:
+    - not_null
+  - name: listing_candidate_id
+    data_type: integer
+    description: ID from the table `candidate.listing_candidates`. It's a unique ID
+      to represent the combination candidate - listing. With the Reapplications feature,
+      there is no longer a unique relation between those entities, so it should be
+      deprecated when the migration to Candidate Funnel Instances is completed.
+    tests:
+    - not_null
+  - name: candidate_funnel_instance_id
+    data_type: integer
+    description: No description available.
+    tests:
+    - not_null
+  - name: candidate_id
+    data_type: integer
+    description: The ID of the candidate. Ideally, each `candidate` ID` represents
+      one real human. This is generated after the candidate finishes its application,
+      so it does not exist in the context of screening conversations.
+    tests:
+    - not_null
+  - name: n_candidate_id
+    data_type: character varying(65535)
+    description: 'A composed identifier for candidates before Screening (where the
+      Candidate ID is created). It''s created as follows: 1. First, if the candidate
+      already has an ID, it''s equal to the Candidate ID. 2. Otherwise, if the Candidate
+      Channel ID is already associated with a Candidate ID, we use that Candidate
+      ID. 3. Finally, if we can''t associate a Candidate ID with the conversation
+      we use a concatenation of `C` plus the Candidate Channel ID.'
+    tests:
+    - not_null
+  - name: candidate_type
+    data_type: character varying(256)
+    description: Boolean that indicates whether the candidate is internal or external
+    tests:
+    - not_null
+  - name: funnel_manually_advanced_steps
+    data_type: boolean
+    description: Boolean that indicates whether the candidate was moved manually through
+      the BO
+    tests:
+    - not_null
+  - name: step_id
+    data_type: integer
+    description: The ID of the step.
+    tests:
+    - not_null
+  - name: step_name
+    data_type: character varying(65535)
+    description: The name of the step.
+    tests:
+    - not_null
+  - name: state_name
+    data_type: character varying(65535)
+    description: The name of the state
+    tests:
+    - not_null
+  - name: funnel_stage_is_visible
+    data_type: boolean
+    description: Boolean that indicates whether the step is visible
+    tests:
+    - not_null
+  - name: funnel_step_number
+    data_type: integer
+    description: The number of the step in the funnel
+    tests:
+    - not_null
+  - name: funnel_stage_number
+    data_type: bigint
+    description: The number of the stage in the funnel
+    tests:
+    - not_null
+  - name: stage_created_at
+    data_type: timestamp with time zone
+    description: Timestamp at which the candidate entered the stage
+    tests:
+    - not_null
+  - name: working_place_id
+    data_type: integer
+    description: 'ID of the working place (Subsidiary Location). The assignment is
+      made by picking the first not null value from this list: 1. The working place
+      defined manually by a user through the BO after the previous manual assignment
+      2. The working place defined manually by a user through the BO, if not, 3. The
+      working place defined by the Interview service'
+    tests:
+    - not_null
+  - name: working_place_name
+    data_type: character varying(65535)
+    description: "Name of the working place (Subsidiary Location). The assignment\
+      \ is made by picking the first not null value from this list: 1. The working\
+      \ place defined manually by a user through the BO after the previous manual\
+      \ assignment 2. The working place defined manually by a user through the BO,\
+      \ if not, 3. The working place defined by the Interview service\u200B"
+    tests:
+    - not_null
+  - name: working_place_region
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tag 'Regi\xF3n'. Matched case insensitive\
+      \ without accents."
+    tests:
+    - not_null
+  - name: working_place_province
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Provincia'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_plaza
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Plaza', 'Colonia' and 'Cluster'.
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_city
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'City' and 'Ciudad'. Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_division
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tags 'Divisi\xF3n' and 'C\xE9lula'.\
+      \ Matched case insensitive without accents."
+    tests:
+    - not_null
+  - name: working_place_field
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Campo'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_site
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Site'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_state
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Estado' and 'State'. Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_zone
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Zona', 'Zone' and 'Municipio'.
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_market
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Mercado'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_format
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Formato'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_zipcode
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Zipcode'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: current_position_id
+    data_type: integer
+    description: 'The ID of the position currently assigned to the candidate in this
+      listing. The assignment is made by picking the first not null value from this
+      list: 1. Question index `new_manually_assigned_job_position_id` (the position
+      manually defined by a user through the BO after the previous manual assignment)
+      2. Question index `manually_assigned_job_position_id` (the position manually
+      defined by a user through the BO) 3. Question index `assigned_job_position_id`
+      (the position defined by the Interview service) 4. Question index `job_position_id`.
+      Note that this question index usually stores a **list** of IDs. When this is
+      the first not-null value, we say that the candidate has multiple current job
+      positions, and each cell of this column will store one of those IDs. (the position
+      defined by the Descartes service) 5. Question index `applied_job_position_id`
+      (the position for which the candidate applied (eref2))'
+    tests:
+    - not_null
+  - name: current_position_name
+    data_type: character varying(65535)
+    description: The name of the position currently assigned to the candidate in this
+      listing.
+    tests:
+    - not_null
+  - name: current_position_first_hierarchy
+    data_type: character varying(65535)
+    description: The first hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_second_hierarchy
+    data_type: character varying(65535)
+    description: The second hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_third_hierarchy
+    data_type: character varying(65535)
+    description: The third hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_fourth_hierarchy
+    data_type: character varying(65535)
+    description: The fourth hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: applied_position_id
+    data_type: integer
+    description: The ID of the position to which the candidate applied. This ID is
+      stored in the question index `applied_position_id` of the candidate data and
+      is usually part of the `eref2`.
+    tests:
+    - not_null
+  - name: applied_position_name
+    data_type: character varying(65535)
+    description: The name of the position to which the candidate applied.
+    tests:
+    - not_null
+  - name: applied_position_first_hierarchy
+    data_type: character varying(65535)
+    description: The first hierarchy of the position to which the candidate applied.
+    tests:
+    - not_null
+  - name: applied_position_second_hierarchy
+    data_type: character varying(65535)
+    description: The second hierarchy of the position to which the candidate applied.
+    tests:
+    - not_null
+  - name: applied_position_third_hierarchy
+    data_type: character varying(65535)
+    description: The third hierarchy of the position to which the candidate applied.
+    tests:
+    - not_null
+  - name: applied_position_fourth_hierarchy
+    data_type: character varying(65535)
+    description: The fourth hierarchy of the position to which the candidate applied.
+    tests:
+    - not_null
+  - name: working_place_type
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'caracteristica_operacion', 'Unidad
+      de Negocio', 'Tipo de Sucursal' and 'Tipo Sucursal'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: funnel_stage
+    data_type: character varying(65535)
+    description: Concatenation of step name and state name
+    tests:
+    - not_null
+  - name: rejected_in_step
+    data_type: boolean
+    description: Boolean that indicates whether the candidate was rejected in th step
+    tests:
+    - not_null
+  - name: state_name_en
+    data_type: character varying(65535)
+    description: The name of the state in english.
+    tests:
+    - not_null
+  - name: funnel_stage_en
+    data_type: character varying(65535)
+    description: Concatenation of step name and state name in english.
+    tests:
+    - not_null
+- name: pulse_survey
+  description: Transformations for the results of the pulse survey by candidate funnel
+    instance, location and position
+  columns:
+  - name: candidate_id
+    data_type: integer
+    description: The ID of the candidate. Ideally, each `candidate` ID` represents
+      one real human. This is generated after the candidate finishes its application,
+      so it does not exist in the context of screening conversations.
+    tests:
+    - not_null
+  - name: listing_id
+    data_type: integer
+    description: The ID of the listing.
+    tests:
+    - not_null
+  - name: subsidiary_id
+    data_type: integer
+    description: The ID of the Subsidiary.
+    tests:
+    - not_null
+  - name: listing_candidate_id
+    data_type: integer
+    description: ID from the table `candidate.listing_candidates`. It's a unique ID
+      to represent the combination candidate - listing. With the Reapplications feature,
+      there is no longer a unique relation between those entities, so it should be
+      deprecated when the migration to Candidate Funnel Instances is completed.
+    tests:
+    - not_null
+  - name: candidate_funnel_instance_id
+    data_type: integer
+    description: The id of the candidate funnel instance
+    tests:
+    - not_null
+  - name: candidate_name
+    data_type: character varying(65535)
+    description: The name of the candidate. It is stored in the question index `name_logic`.
+    tests:
+    - not_null
+  - name: hired_at
+    data_type: date
+    description: 'Timestamp at which the candidate was hired. It usually consists
+      of the timestamp of the movement of the candidate to a hired step, but it can
+      be overwritten with the following information: 1. Clients with the Entry Date
+      feature: the entry date of the candidate at work, provided by the client in
+      the BO. 2. Candidates manually advanced to the hired step: with a hire date
+      provided by the client or support.'
+    tests:
+    - not_null
+  - name: working_place_name
+    data_type: character varying(65535)
+    description: "Name of the working place (Subsidiary Location). The assignment\
+      \ is made by picking the first not null value from this list: 1. The working\
+      \ place defined manually by a user through the BO after the previous manual\
+      \ assignment 2. The working place defined manually by a user through the BO,\
+      \ if not, 3. The working place defined by the Interview service\u200B"
+    tests:
+    - not_null
+  - name: working_place_country
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: working_place_state
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Estado' and 'State'. Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_division
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tags 'Divisi\xF3n' and 'C\xE9lula'.\
+      \ Matched case insensitive without accents."
+    tests:
+    - not_null
+  - name: working_place_region
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tag 'Regi\xF3n'. Matched case insensitive\
+      \ without accents."
+    tests:
+    - not_null
+  - name: working_place_city
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'City' and 'Ciudad'. Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_site
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Site'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_zone
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Zona', 'Zone' and 'Municipio'.
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_field
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Campo'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_market
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Mercado'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_recruiter_name
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: working_place_recruiter_id
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: working_place_brand
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: working_place_format
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Formato'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_province
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Provincia'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_plaza
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Plaza', 'Colonia' and 'Cluster'.
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_type
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'caracteristica_operacion', 'Unidad
+      de Negocio', 'Tipo de Sucursal' and 'Tipo Sucursal'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_zipcode
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Zipcode'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_recruiter_email
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: working_place_category
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tag 'Categor\xEDa'. Matched case insensitive\
+      \ without accents."
+    tests:
+    - not_null
+  - name: position_id
+    data_type: integer
+    description: 'The ID of the position currently assigned to the candidate in this
+      listing. The assignment is made by picking the first not null value from this
+      list: 1. Question index `new_manually_assigned_job_position_id` (the position
+      manually defined by a user through the BO after the previous manual assignment)
+      2. Question index `manually_assigned_job_position_id` (the position manually
+      defined by a user through the BO) 3. Question index `assigned_job_position_id`
+      (the position defined by the Interview service) 4. Question index `job_position_id`.
+      Note that this question index usually stores a **list** of IDs. When this is
+      the first not-null value, we say that the candidate has multiple current job
+      positions, and each cell of this column will store one of those IDs. (the position
+      defined by the Descartes service) 5. Question index `applied_job_position_id`
+      (the position for which the candidate applied (eref2))'
+    tests:
+    - not_null
+  - name: position_name
+    data_type: character varying(65535)
+    description: The name of the current job position of the candidate.
+    tests:
+    - not_null
+  - name: first_hierarchy_name
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: second_hierarchy_name
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: third_hierarchy_name
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: fourth_hierarchy_name
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: pulse_general_feeling_7days
+    data_type: character varying(65535)
+    description: How satisfied is the employee with their work captured in the 7 day
+      pulse survey
+    tests:
+    - not_null
+  - name: pulse_general_feeling_why_7days
+    data_type: character varying(65535)
+    description: Reasons why an employee is feeling unsatisfied or very unsatisfied
+      with their work in the company captured in the 7 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_why_left_7days
+    data_type: character varying(65535)
+    description: Reasons why the employee left captured in the 7 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_leader_satisfaction_7days
+    data_type: character varying(65535)
+    description: Employee satisfaction working with their leader captured in the 7
+      day pulse survey
+    tests:
+    - not_null
+  - name: pulse_leader_satisfaction_why_7days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied working
+      with their leader captured in the 7 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_environment_satisfaction_7days
+    data_type: character varying(65535)
+    description: Employee satisfaction with their work environment captured in the
+      7 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_environment_satisfaction_why_7days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied with their
+      work environment captured in the 7 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_load_satisfaction_7days
+    data_type: character varying(65535)
+    description: Employee satisfaction with their work load captured in the 7 day
+      pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_load_satisfaction_why_7days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied with their
+      work load captured in the 7 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_training_check_7days
+    data_type: character varying(65535)
+    description: Employee satisfaction with received training captured in the 7 day
+      pulse survey
+    tests:
+    - not_null
+  - name: pulse_training_check_why_7days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied with their
+      received training captured in the 7 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_value_7days
+    data_type: character varying(65535)
+    description: How much an employee would recommend their company to friends and
+      family graded 1 to 10, captured in the 7 day pulse survey. This is used to create
+      the 7 day NPS.
+    tests:
+    - not_null
+  - name: pulse_value_why_7days
+    data_type: character varying(65535)
+    description: Reasons why the employee chose their pulse_value_7days score captured
+      in the 7 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_general_feeling_14days
+    data_type: character varying(65535)
+    description: How satisfied is the employee with their work captured in the 14
+      day pulse survey
+    tests:
+    - not_null
+  - name: pulse_general_feeling_why_14days
+    data_type: character varying(65535)
+    description: Reasons why an employee is feeling unsatisfied or very unsatisfied
+      with their work in the company captured in the 14 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_why_left_14days
+    data_type: character varying(65535)
+    description: Reasons why the employee left captured in the 14 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_leader_satisfaction_14days
+    data_type: character varying(65535)
+    description: Employee satisfaction working with their leader captured in the 14
+      day pulse survey
+    tests:
+    - not_null
+  - name: pulse_leader_satisfaction_why_14days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied working
+      with their leader captured in the 14 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_environment_satisfaction_14days
+    data_type: character varying(65535)
+    description: Employee satisfaction with their work environment captured in the
+      14 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_environment_satisfaction_why_14days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied with their
+      work environment captured in the 14 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_load_satisfaction_14days
+    data_type: character varying(65535)
+    description: Employee satisfaction with their work load captured in the 14 day
+      pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_load_satisfaction_why_14days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied with their
+      work load captured in the 14 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_value_14days
+    data_type: character varying(65535)
+    description: How much an employee would recommend their company to friends and
+      family graded 1 to 10, captured in the 14 day pulse survey. This is used to
+      create the 14 day NPS.
+    tests:
+    - not_null
+  - name: pulse_value_why_14days
+    data_type: character varying(65535)
+    description: Reasons why the employee chose their pulse_value_14days score captured
+      in the 14 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_general_feeling_30days
+    data_type: character varying(65535)
+    description: How satisfied is the employee with their work captured in the 30
+      day pulse survey
+    tests:
+    - not_null
+  - name: pulse_general_feeling_why_30days
+    data_type: character varying(65535)
+    description: Reasons why an employee is feeling unsatisfied or very unsatisfied
+      with their work in the company captured in the 30 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_why_left_30days
+    data_type: character varying(65535)
+    description: Reasons why the employee left captured in the 30 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_leader_satisfaction_30days
+    data_type: character varying(65535)
+    description: Employee satisfaction working with their leader captured in the 30
+      day pulse survey
+    tests:
+    - not_null
+  - name: pulse_leader_satisfaction_why_30days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied working
+      with their leader captured in the 30 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_environment_satisfaction_30days
+    data_type: character varying(65535)
+    description: Employee satisfaction with their work environment captured in the
+      30 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_environment_satisfaction_why_30days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied with their
+      work environment captured in the 30 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_load_satisfaction_30days
+    data_type: character varying(65535)
+    description: Employee satisfaction with their work load captured in the 30 day
+      pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_load_satisfaction_why_30days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied with their
+      work load captured in the 30 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_career_check_30days
+    data_type: character varying(65535)
+    description: Willingness of an employee to continue their career within the company,
+      captured in the 30 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_career_check_why_30days
+    data_type: character varying(65535)
+    description: Reasons why an employee might not want to continue their career within
+      the company captured in the 30 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_value_30days
+    data_type: character varying(65535)
+    description: How much an employee would recommend their company to friends and
+      family graded 1 to 10, captured in the 30 day pulse survey. This is used to
+      create the 30 day NPS.
+    tests:
+    - not_null
+  - name: pulse_value_why_30days
+    data_type: character varying(65535)
+    description: Reasons why the employee chose their pulse_value_30days score captured
+      in the 30 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_general_feeling_60days
+    data_type: character varying(65535)
+    description: How satisfied is the employee with their work captured in the 60
+      day pulse survey
+    tests:
+    - not_null
+  - name: pulse_general_feeling_why_60days
+    data_type: character varying(65535)
+    description: Reasons why an employee is feeling unsatisfied or very unsatisfied
+      with their work in the company captured in the 60 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_why_left_60days
+    data_type: character varying(65535)
+    description: Reasons why the employee left captured in the 60 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_leader_satisfaction_60days
+    data_type: character varying(65535)
+    description: Employee satisfaction working with their leader captured in the 60
+      day pulse survey
+    tests:
+    - not_null
+  - name: pulse_leader_satisfaction_why_60days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied working
+      with their leader captured in the 60 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_environment_satisfaction_60days
+    data_type: character varying(65535)
+    description: Employee satisfaction with their work environment captured in the
+      60 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_environment_satisfaction_why_60days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied with their
+      work environment captured in the 60 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_load_satisfaction_60days
+    data_type: character varying(65535)
+    description: Employee satisfaction with their work load captured in the 60 day
+      pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_load_satisfaction_why_60days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied with their
+      work load captured in the 60 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_value_60days
+    data_type: character varying(65535)
+    description: How much an employee would recommend their company to friends and
+      family graded 1 to 10, captured in the 60 day pulse survey. This is used to
+      create the 60 day NPS.
+    tests:
+    - not_null
+  - name: pulse_value_why_60days
+    data_type: character varying(65535)
+    description: Reasons why the employee chose their pulse_value_60days score captured
+      in the 60 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_general_feeling_90days
+    data_type: character varying(65535)
+    description: How satisfied is the employee with their work captured in the 90
+      day pulse survey
+    tests:
+    - not_null
+  - name: pulse_general_feeling_why_90days
+    data_type: character varying(65535)
+    description: Reasons why an employee is feeling unsatisfied or very unsatisfied
+      with their work in the company captured in the 90 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_why_left_90days
+    data_type: character varying(65535)
+    description: Reasons why the employee left captured in the 90 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_leader_satisfaction_90days
+    data_type: character varying(65535)
+    description: Employee satisfaction working with their leader captured in the 90
+      day pulse survey
+    tests:
+    - not_null
+  - name: pulse_leader_satisfaction_why_90days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied working
+      with their leader captured in the 90 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_environment_satisfaction_90days
+    data_type: character varying(65535)
+    description: Employee satisfaction with their work environment captured in the
+      90 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_environment_satisfaction_why_90days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied with their
+      work environment captured in the 90 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_load_satisfaction_90days
+    data_type: character varying(65535)
+    description: Employee satisfaction with their work load captured in the 90 day
+      pulse survey
+    tests:
+    - not_null
+  - name: pulse_work_load_satisfaction_why_90days
+    data_type: character varying(65535)
+    description: Reasons why an employee is unsatisfied or very unsatisfied with their
+      work load captured in the 90 day pulse survey
+    tests:
+    - not_null
+  - name: pulse_value_90days
+    data_type: character varying(65535)
+    description: How much an employee would recommend their company to friends and
+      family graded 1 to 10, captured in the 90 day pulse survey. This is used to
+      create the 90 day NPS.
+    tests:
+    - not_null
+  - name: pulse_value_why_90days
+    data_type: character varying(65535)
+    description: Reasons why the employee chose their pulse_value_90days score captured
+      in the 90 day pulse survey
+    tests:
+    - not_null
+- name: rejection_reasons
+  description: Rejection reasons by candidate funnel instance, step, locations and
+    positions
+  columns:
+  - name: subsidiary_id
+    data_type: integer
+    description: The ID of the Subsidiary.
+    tests:
+    - not_null
+  - name: subsidiary_name
+    data_type: character varying(255)
+    description: The name of the Subsidiary.
+    tests:
+    - not_null
+  - name: listing_id
+    data_type: integer
+    description: The ID of the listing.
+    tests:
+    - not_null
+  - name: listing_name
+    data_type: character varying(255)
+    description: The name of the listing.
+    tests:
+    - not_null
+  - name: application_date
+    data_type: date
+    description: The date at which the candidate applied. This is usually the timestamp
+      of the application creation (`candidate.applications.created_at`), casted to
+      date format.
+    tests:
+    - not_null
+  - name: id
+    data_type: integer
+    description: The ID of the rejection reason (it can be from candidate.rejection_reasons
+      or candidate_interview.assignments).
+    tests:
+    - not_null
+  - name: listing_candidate_id
+    data_type: integer
+    description: ID from the table `candidate.listing_candidates`. It's a unique ID
+      to represent the combination candidate - listing. With the Reapplications feature,
+      there is no longer a unique relation between those entities, so it should be
+      deprecated when the migration to Candidate Funnel Instances is completed.
+    tests:
+    - not_null
+  - name: candidate_funnel_instance_id
+    data_type: integer
+    description: No description available.
+    tests:
+    - not_null
+  - name: rejection_reason
+    data_type: character varying(65535)
+    description: The reason of the rejection of the candidate.
+    tests:
+    - not_null
+  - name: step_name
+    data_type: character varying(255)
+    description: The name of the step.
+    tests:
+    - not_null
+  - name: step_number
+    data_type: integer
+    description: The number of the step in the funnel.
+    tests:
+    - not_null
+  - name: step_id
+    data_type: integer
+    description: The ID of the step.
+    tests:
+    - not_null
+  - name: rejection_date
+    data_type: timestamp with time zone
+    description: Timestamp at which the rejection reason was created.
+    tests:
+    - not_null
+  - name: rejection_reason_updated_at
+    data_type: timestamp with time zone
+    description: Timestamp at which the rejection reason was updated.
+    tests:
+    - not_null
+  - name: working_place_id
+    data_type: integer
+    description: 'ID of the working place (Subsidiary Location). The assignment is
+      made by picking the first not null value from this list: 1. The working place
+      defined manually by a user through the BO after the previous manual assignment
+      2. The working place defined manually by a user through the BO, if not, 3. The
+      working place defined by the Interview service.'
+    tests:
+    - not_null
+  - name: working_place_name
+    data_type: character varying(255)
+    description: 'Name of the working place (Subsidiary Location). The assignment
+      is made by picking the first not null value from this list: 1. The working place
+      defined manually by a user through the BO after the previous manual assignment
+      2. The working place defined manually by a user through the BO, if not, 3. The
+      working place defined by the Interview service.'
+    tests:
+    - not_null
+  - name: working_place_region
+    data_type: character varying(255)
+    description: "Value of subsidiary location tag 'Regi\xF3n'. Matched case insensitive\
+      \ without accents."
+    tests:
+    - not_null
+  - name: working_place_province
+    data_type: character varying(255)
+    description: Value of subsidiary location tag 'Provincia'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_plaza
+    data_type: character varying(255)
+    description: Value of subsidiary location tags 'Plaza', 'Colonia' and 'Cluster'.
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_city
+    data_type: character varying(255)
+    description: Value of subsidiary location tags 'City' and 'Ciudad'. Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_division
+    data_type: character varying(255)
+    description: "Value of subsidiary location tags 'Divisi\xF3n' and 'C\xE9lula'.\
+      \ Matched case insensitive without accents."
+    tests:
+    - not_null
+  - name: working_place_field
+    data_type: character varying(255)
+    description: Value of subsidiary location tag 'Campo'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_site
+    data_type: character varying(255)
+    description: Value of subsidiary location tag 'Site'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_state
+    data_type: character varying(255)
+    description: Value of subsidiary location tags 'Estado' and 'State'. Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_zone
+    data_type: character varying(255)
+    description: Value of subsidiary location tags 'Zona', 'Zone' and 'Municipio'.
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_market
+    data_type: character varying(255)
+    description: Value of subsidiary location tag 'Mercado'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_format
+    data_type: character varying(255)
+    description: Value of subsidiary location tag 'Formato'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_zipcode
+    data_type: character varying(255)
+    description: Value of subsidiary location tag 'Zipcode'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_type
+    data_type: character varying(255)
+    description: Value of subsidiary location tags 'caracteristica_operacion', 'Unidad
+      de Negocio', 'Tipo de Sucursal' and 'Tipo Sucursal'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_category
+    data_type: character varying(255)
+    description: "Value of subsidiary location tag 'Categor\xEDa'. Matched case insensitive\
+      \ without accents."
+    tests:
+    - not_null
+  - name: current_position_id
+    data_type: integer
+    description: 'The ID of the position currently assigned to the candidate in this
+      listing. The assignment is made by picking the first not null value from this
+      list: 1. Question index `new_manually_assigned_job_position_id` (the position
+      manually defined by a user through the BO after the previous manual assignment)
+      2. Question index `manually_assigned_job_position_id` (the position manually
+      defined by a user through the BO) 3. Question index `assigned_job_position_id`
+      (the position defined by the Interview service) 4. Question index `job_position_id`.
+      Note that this question index usually stores a **list** of IDs. When this is
+      the first not-null value, we say that the candidate has multiple current job
+      positions, and each cell of this column will store one of those IDs. (the position
+      defined by the Descartes service) 5. Question index `applied_job_position_id`
+      (the position for which the candidate applied (eref2)).'
+    tests:
+    - not_null
+  - name: current_position_name
+    data_type: character varying(255)
+    description: The name of the position currently assigned to the candidate in this
+      listing.
+    tests:
+    - not_null
+  - name: current_position_first_hierarchy
+    data_type: character varying(255)
+    description: The first hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_second_hierarchy
+    data_type: character varying(255)
+    description: The second hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_third_hierarchy
+    data_type: character varying(255)
+    description: The third hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_fourth_hierarchy
+    data_type: character varying(255)
+    description: The fourth hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+- name: sourcing
+  description: Applications with their source attributions, references and funnel
+    events by candidate funnel instance, locations and positions
+  columns:
+  - name: subsidiary_id
+    data_type: integer
+    description: The ID of the Subsidiary.
+    tests:
+    - not_null
+  - name: subsidiary_name
+    data_type: character varying(65535)
+    description: The name of the Subsidiary.
+    tests:
+    - not_null
+  - name: listing_id
+    data_type: integer
+    description: The ID of the listing.
+    tests:
+    - not_null
+  - name: listing_name
+    data_type: character varying(65535)
+    description: The name of the listing.
+    tests:
+    - not_null
+  - name: listing_type
+    data_type: character varying(65535)
+    description: The type of the listing.
+    tests:
+    - not_null
+  - name: application_date
+    data_type: timestamp with time zone
+    description: The date at which the candidate applied. This is usually the timestamp
+      of the application creation (`candidate.applications.created_at`), casted to
+      date format.
+    tests:
+    - not_null
+  - name: candidate_application_date
+    data_type: timestamp without time zone
+    description: Date considered as application date in the backoffice. This is updated
+      if the candidate continues the conversation after the creation of the application.
+    tests:
+    - not_null
+  - name: hired_date
+    data_type: date
+    description: '`Hired_at` column truncated to date.'
+    tests:
+    - not_null
+  - name: entry_date
+    data_type: date
+    description: The entry date of the candidate. This is usually loaded by the recruiter
+      and it's stored in the question indexes `entry_datetime` or `entry_date_time`.
+    tests:
+    - not_null
+  - name: candidate_channel_id
+    data_type: integer
+    description: The identifier for the channel by which a candidate talks to emi,
+      a candidate can have more than one channel (whatsapp, facebook, etc).
+    tests:
+    - not_null
+  - name: n_candidate_id
+    data_type: character varying(12)
+    description: 'A composed identifier for candidates before Screening (where the
+      Candidate ID is created). It''s created as follows: 1. First, if the candidate
+      already has an ID, it''s equal to the Candidate ID. 2. Otherwise, if the Candidate
+      Channel ID is already associated with a Candidate ID, we use that Candidate
+      ID. 3. Finally, if we can''t associate a Candidate ID with the conversation
+      we use a concatenation of `C` plus the Candidate Channel ID.'
+    tests:
+    - not_null
+  - name: personal_id
+    data_type: character varying(65535)
+    description: A way to identify candidates who don't have candidate_id. It is a
+      coalesce between document, email and mobile from the candidate.
+    tests:
+    - not_null
+  - name: candidate_id
+    data_type: integer
+    description: The ID of the candidate. Ideally, each `candidate` ID` represents
+      one real human. This is generated after the candidate finishes its application,
+      so it does not exist in the context of screening conversations.
+    tests:
+    - not_null
+  - name: listing_candidate_id
+    data_type: integer
+    description: ID from the table `candidate.listing_candidates`. It's a unique ID
+      to represent the combination candidate - listing. With the Reapplications feature,
+      there is no longer a unique relation between those entities, so it should be
+      deprecated when the migration to Candidate Funnel Instances is completed.
+    tests:
+    - not_null
+  - name: candidate_name
+    data_type: character varying(65535)
+    description: The name of the candidate. It is stored in the question index `name_logic`.
+    tests:
+    - not_null
+  - name: candidate_zip_code
+    data_type: character varying(65535)
+    description: Candidate's residency zipcode.
+    tests:
+    - not_null
+  - name: candidate_city
+    data_type: character varying(65535)
+    description: Candidate's residency city.
+    tests:
+    - not_null
+  - name: candidate_state
+    data_type: character varying(65535)
+    description: Candidate's residency state.
+    tests:
+    - not_null
+  - name: experience_salary
+    data_type: character varying(65535)
+    description: Candidate's experience salary.
+    tests:
+    - not_null
+  - name: talent_has_disability
+    data_type: character varying(65535)
+    description: Indicates whether the candidate has a disability.
+    tests:
+    - not_null
+  - name: is_working
+    data_type: character varying(65535)
+    description: Indicates whether the candidate is currently employed.
+    tests:
+    - not_null
+  - name: availability_shifting
+    data_type: character varying(19)
+    description: 'Candidate''s self-reported availability shifting, based on the following
+      question indexes: * `working_hours_roll_shifts_n` * `working_hours_roll_shifts`
+      * `working_shifts_ok` * `working_roll_shifts_operario` * `working_roll_shifts_vendedor`.'
+    tests:
+    - not_null
+  - name: working_hours_days
+    data_type: character varying(65535)
+    description: Candidate's availability to shift working hours.
+    tests:
+    - not_null
+  - name: education
+    data_type: character varying(65535)
+    description: 'This is a calculated column based on the self-reported education
+      level of the candidate. It is based on the following question indexes: * `education_attendance`
+      * `education_level` * `education_licenciatura` * `education_prepa` * `education_secondary`.'
+    tests:
+    - not_null
+  - name: education_level_text
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: candidate_phone
+    data_type: character varying(65535)
+    description: The phone of the candidate.
+    tests:
+    - not_null
+  - name: candidate_email
+    data_type: character varying(65535)
+    description: The email from the candidate.
+    tests:
+    - not_null
+  - name: candidate_location
+    data_type: character varying(65535)
+    description: Location indicated by the candidate in the conversation.
+    tests:
+    - not_null
+  - name: candidate_funnel_instance_id
+    data_type: integer
+    description: No description available.
+    tests:
+    - not_null
+  - name: started_screening_at
+    data_type: timestamp with time zone
+    description: Timestamp at which the candidate started the screening conversation.
+      It does not apply to candidates who applied through other means as forms or
+      walkers.
+    tests:
+    - not_null
+  - name: applied
+    data_type: boolean
+    description: Indicates whether the candidate has applied.
+    tests:
+    - not_null
+  - name: started_screening
+    data_type: boolean
+    description: Indicates whether the candidate's screening process has started.
+    tests:
+    - not_null
+  - name: completed_screening
+    data_type: boolean
+    description: Indicates whether the candidate's screening process has been completed.
+    tests:
+    - not_null
+  - name: pending_screening_evaluation_at
+    data_type: timestamp with time zone
+    description: Timestamp at which the candidate is ready for Descartes. For an organic
+      candidate it is when the conversation ends and is interested, and for a manual
+      candidate it is when it is loaded.
+    tests:
+    - not_null
+  - name: pending_screening_evaluation
+    data_type: boolean
+    description: Indicates whether the candidate is ready for Descartes.
+    tests:
+    - not_null
+  - name: passed_screening
+    data_type: boolean
+    description: Indicates whether the candidate passed the screening.
+    tests:
+    - not_null
+  - name: passed_first_interview_step
+    data_type: boolean
+    description: Indicates whether the candidate passed the first interview step.
+    tests:
+    - not_null
+  - name: hired
+    data_type: boolean
+    description: Indicates whether the candidate has been hired.
+    tests:
+    - not_null
+  - name: working_place_id
+    data_type: integer
+    description: 'ID of the working place (Subsidiary Location). The assignment is
+      made by picking the first not null value from this list: 1. The working place
+      defined manually by a user through the BO after the previous manual assignment
+      2. The working place defined manually by a user through the BO, if not, 3. The
+      working place defined by the Interview service.'
+    tests:
+    - not_null
+  - name: working_place_name
+    data_type: character varying(65535)
+    description: 'Name of the working place (Subsidiary Location). The assignment
+      is made by picking the first not null value from this list: 1. The working place
+      defined manually by a user through the BO after the previous manual assignment
+      2. The working place defined manually by a user through the BO, if not, 3. The
+      working place defined by the Interview service.'
+    tests:
+    - not_null
+  - name: working_place_region
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tag 'Regi\xF3n'. Matched case insensitive\
+      \ without accents."
+    tests:
+    - not_null
+  - name: working_place_province
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Provincia'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_plaza
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Plaza', 'Colonia' and 'Cluster'.
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_city
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'City' and 'Ciudad'. Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_division
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tags 'Divisi\xF3n' and 'C\xE9lula'.\
+      \ Matched case insensitive without accents."
+    tests:
+    - not_null
+  - name: working_place_field
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Campo'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_site
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Site'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_state
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Estado' and 'State'. Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_zone
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'Zona', 'Zone' and 'Municipio'.
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_market
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Mercado'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_format
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Formato'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_zipcode
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag 'Zipcode'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_category
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tag 'Categor\xEDa'. Matched case insensitive\
+      \ without accents."
+    tests:
+    - not_null
+  - name: working_place_type
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags 'caracteristica_operacion', 'Unidad
+      de Negocio', 'Tipo de Sucursal' and 'Tipo Sucursal'. Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: applied_position_id
+    data_type: integer
+    description: The ID of the position to which the candidate applied. This ID is
+      stored in the question index `applied_position_id` of the candidate data and
+      is usually part of the `eref2`.
+    tests:
+    - not_null
+  - name: applied_position_name
+    data_type: character varying(65535)
+    description: The name of the position to which the candidate applied.
+    tests:
+    - not_null
+  - name: applied_position_first_hierarchy
+    data_type: character varying(65535)
+    description: The first hierarchy of the position to which the candidate applied.
+    tests:
+    - not_null
+  - name: applied_position_second_hierarchy
+    data_type: character varying(65535)
+    description: The second hierarchy of the position to which the candidate applied.
+    tests:
+    - not_null
+  - name: applied_position_third_hierarchy
+    data_type: character varying(65535)
+    description: The third hierarchy of the position to which the candidate applied.
+    tests:
+    - not_null
+  - name: applied_position_fourth_hierarchy
+    data_type: character varying(65535)
+    description: The fourth hierarchy of the position to which the candidate applied.
+    tests:
+    - not_null
+  - name: current_position_id
+    data_type: integer
+    description: 'The ID of the position currently assigned to the candidate in this
+      listing. The assignment is made by picking the first not null value from this
+      list: 1. Question index `new_manually_assigned_job_position_id` (the position
+      manually defined by a user through the BO after the previous manual assignment)
+      2. Question index `manually_assigned_job_position_id` (the position manually
+      defined by a user through the BO) 3. Question index `assigned_job_position_id`
+      (the position defined by the Interview service) 4. Question index `job_position_id`.
+      Note that this question index usually stores a **list** of IDs. When this is
+      the first not-null value, we say that the candidate has multiple current job
+      positions, and each cell of this column will store one of those IDs. (the position
+      defined by the Descartes service) 5. Question index `applied_job_position_id`
+      (the position for which the candidate applied (eref2)).'
+    tests:
+    - not_null
+  - name: current_position_name
+    data_type: character varying(65535)
+    description: The name of the position currently assigned to the candidate in this
+      listing.
+    tests:
+    - not_null
+  - name: current_position_first_hierarchy
+    data_type: character varying(65535)
+    description: The first hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_second_hierarchy
+    data_type: character varying(65535)
+    description: The second hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_third_hierarchy
+    data_type: character varying(65535)
+    description: The third hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_fourth_hierarchy
+    data_type: character varying(65535)
+    description: The fourth hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: source
+    data_type: character varying(255)
+    description: Original source of the application, coming from the eref2.
+    tests:
+    - not_null
+  - name: attributed_source
+    data_type: character varying(1153)
+    description: The attributed_source column description.
+    tests:
+    - not_null
+  - name: attributed_source_es
+    data_type: character varying(1345)
+    description: Spanish translation of the attributed source.
+    tests:
+    - not_null
+  - name: attributed_source_subsource
+    data_type: character varying(769)
+    description: Combination of source_standard_es and subsource_standard_es used
+      as the standard source shown in analytics (in spanish).
+    tests:
+    - not_null
+  - name: attributed_source_subsource_es
+    data_type: character varying(769)
+    description: Spanish translation of the combination of the attributed source and
+      subsource.
+    tests:
+    - not_null
+  - name: source_standard
+    data_type: character varying(255)
+    description: Application's standardized source.
+    tests:
+    - not_null
+  - name: subsource_standard
+    data_type: character varying(255)
+    description: Application's standardized subsource.
+    tests:
+    - not_null
+  - name: source_standard_es
+    data_type: character varying(255)
+    description: Application's standardized source translated to spanish.
+    tests:
+    - not_null
+  - name: subsource_standard_es
+    data_type: character varying(255)
+    description: Application's standardized subsource translated to spanish.
+    tests:
+    - not_null
+  - name: standard_source_category
+    data_type: character varying(256)
+    description: Application's standard source category.
+    tests:
+    - not_null
+  - name: standard_source_category_es
+    data_type: character varying(256)
+    description: Application's standard source category in spanish.
+    tests:
+    - not_null
+  - name: reference
+    data_type: character varying(255)
+    description: Application's reference information.
+    tests:
+    - not_null
+  - name: reference_extra
+    data_type: character varying(511)
+    description: Application's reference extra information.
+    tests:
+    - not_null
+  - name: application_channel
+    data_type: character varying(65535)
+    description: The channel from which de application comes from, using only the
+      channel from the eref2.
+    tests:
+    - not_null
+  - name: application_channel_enriched
+    data_type: character varying(65535)
+    description: Combined channel from eref2, motion and reference field, for manual
+      channels it is also combined with the builder from the eref2.
+    tests:
+    - not_null
+  - name: application_channel_enriched_es
+    data_type: character varying(65535)
+    description: Combined channel from eref2, motion and reference field, for manual
+      channels it is also combined with the builder translated to spanish from the
+      eref2.
+    tests:
+    - not_null
+  - name: application_builder_enriched
+    data_type: character varying(255)
+    description: Translation for application builders. Uses mainly builder from eref2,
+      reference for cases where we didn't save builder in eref2 and job_posting_publication_id
+      for automatic job postings.
+    tests:
+    - not_null
+  - name: referrer_code
+    data_type: character varying(255)
+    description: Code associated with the referrer of the candidate.
+    tests:
+    - not_null
+  - name: referrer_type
+    data_type: character varying(255)
+    description: Type of referrer (candidate, employee, recruiter).
+    tests:
+    - not_null
+  - name: referrer_channel_user_id
+    data_type: integer
+    description: The channel user id from the referrer.
+    tests:
+    - not_null
+  - name: referrer_is_incentivized
+    data_type: boolean
+    description: Indicates whether the referrer is rewarded when referring.
+    tests:
+    - not_null
+  - name: referrer_employee_id
+    data_type: character varying(65535)
+    description: Employee ID associated with the referrer.
+    tests:
+    - not_null
+  - name: referrer_format
+    data_type: character varying(65535)
+    description: Format of the referrer related to specific client's locations (Walmart).
+    tests:
+    - not_null
+  - name: referrer_determinant
+    data_type: character varying(65535)
+    description: Determinant of the referrer related to specific client's locations
+      (Walmart).
+    tests:
+    - not_null
+  - name: referrer_plaza
+    data_type: character varying(65535)
+    description: Plaza of the referrer related to specific client's locations (Farmacias
+      del Ahorro).
+    tests:
+    - not_null
+  - name: referrer_brand
+    data_type: character varying(65535)
+    description: Brand associated with the referrer (Alsea).
+    tests:
+    - not_null
+  - name: referrer_mail
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: referrer_phone_number
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: payroll_number
+    data_type: integer
+    description: External ID associated with the candidate (used by Oxxo, Danone,
+      Nemak).
+    tests:
+    - not_null
+  - name: assigned_user_email
+    data_type: character varying(65535)
+    description: 'Email of the assigned user. Here we define the assignment picking
+      the first ID that is not null, in the following order: 1. The ID found in the
+      question index `assigned_user_id` of the candidate''s data. 2. The ID found
+      in the question index `interview_user_id` of the candidate''s data.'
+    tests:
+    - not_null
+  - name: assigned_vacancy_coordinator_email
+    data_type: character varying(65535)
+    description: The email from the coordinator of the vacancy.
+    tests:
+    - not_null
+  - name: assigned_vacancy_advisor_email
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: referrer_working_place_id
+    data_type: integer
+    description: No description available.
+    tests:
+    - not_null
+  - name: referrer_working_place_name
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: referrer_working_place_format
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+  - name: referrer_working_place_plaza
+    data_type: character varying(65535)
+    description: Plaza related to the referrer's working place id.
+    tests:
+    - not_null
+  - name: referrer_working_place_region
+    data_type: character varying(65535)
+    description: Region related to the referrer's working place id.
+    tests:
+    - not_null
+  - name: referrer_working_place_type
+    data_type: character varying(65535)
+    description: Type related to the referrer's working place id.
+    tests:
+    - not_null
+  - name: referrer_working_place_state
+    data_type: character varying(65535)
+    description: State related to the referrer's working place id.
+    tests:
+    - not_null
+  - name: referrer_working_place_city
+    data_type: character varying(65535)
+    description: City related to the referrer's working place id.
+    tests:
+    - not_null
+  - name: referrer_working_place_zone
+    data_type: character varying(65535)
+    description: Zone related to the referrer's working place id.
+    tests:
+    - not_null
+  - name: outbound_medium
+    data_type: character varying(255)
+    description: Medium used for outbound communication (email, whatsapp, sms, facebook,
+      etc).
+    tests:
+    - not_null
+  - name: outbound_origin
+    data_type: character varying(255)
+    description: Origin of the outbound communication (ATS, recruiter).
+    tests:
+    - not_null
+  - name: campaign_name
+    data_type: character varying(255)
+    description: Name of the sourcing campaign.
+    tests:
+    - not_null
+  - name: campaign_type
+    data_type: character varying(255)
+    description: Type of the sourcing campaign.
+    tests:
+    - not_null
+  - name: customer_campaign_name
+    data_type: character varying(255)
+    description: Client's customized name of the sourcing campaign.
+    tests:
+    - not_null
+  - name: application_builder
+    data_type: character varying(255)
+    description: Tool by which the application link was created found in eref2.
+    tests:
+    - not_null
+  - name: link_id
+    data_type: integer
+    description: ID associated with the link.
+    tests:
+    - not_null
+  - name: last_funnel_stage
+    data_type: character varying(65535)
+    description: Candidate's last stage (step - state) in the funnel.
+    tests:
+    - not_null
+  - name: last_step_id
+    data_type: integer
+    description: Last step_id from candidate_steps for a specific candidate.
+    tests:
+    - not_null
+  - name: last_step_name
+    data_type: character varying(65535)
+    description: Last step name from candidate_steps for a specific candidate.
+    tests:
+    - not_null
+  - name: last_state_name
+    data_type: character varying(65535)
+    description: Last state from candidate_steps for a specific candidate and step.
+    tests:
+    - not_null
+  - name: last_step_type
+    data_type: character varying(65535)
+    description: Last step type from candidate_steps for a specific candidate.
+    tests:
+    - not_null
+  - name: attributed_source_subsource_custom
+    data_type: character varying(515)
+    description: Combination of source_custom and subsource_custom from customizations
+      by subsidiary from custom_sourcing_subsidiary seed.
+    tests:
+    - not_null
+  - name: source_filter_en
+    data_type: character varying(256)
+    description: English source filter for the Sourcing Standard Dashboard, it uses
+      the custom source of a client and if it is null the standard one.
+    tests:
+    - not_null
+  - name: source_filter_es
+    data_type: character varying(256)
+    description: Spanish source filter for the Sourcing Standard Dashboard, it uses
+      the custom source of a client and if it is null the standard one.
+    tests:
+    - not_null
+  - name: referrer_name
+    data_type: character varying(65535)
+    description: Name of the referrer.
+    tests:
+    - not_null
+  - name: assigned_user_name
+    data_type: character varying(65535)
+    description: 'Name of the assigned user. Here we define the assignment picking
+      the first ID that is not null, in the following order: 1. The ID found in the
+      question index `assigned_user_id` of the candidate''s data. 2. The ID found
+      in the question index `interview_user_id` of the candidate''s data.'
+    tests:
+    - not_null
+  - name: attracted_by_user_id
+    data_type: integer
+    description: User ID of the person who attracted the candidate (emiUserId).
+    tests:
+    - not_null
+  - name: hire_user_id
+    data_type: numeric(18,0)
+    description: User id responsible of the hire, considering user ids from all the
+      funnel in order by user who moves candidate to hire to user who attracted.
+    tests:
+    - not_null
+  - name: job_matching_sourcer_subsidiary_id
+    data_type: integer
+    description: In the Job Matching feature, the Sourcer is the client to whom we
+      attribute the candidate in the eref2's sourcerSubsidiaryId key. This feature
+      involves inviting candidates in eligible states of our clients' funnels to apply
+      for positions with other clients. The Sourcer is the client we credit with attracting
+      that candidate.
+    tests:
+    - not_null
+  - name: job_matching_initiative
+    data_type: character varying(256)
+    description: Name of the campaign in the Job Matching feature. It also comes in
+      the eref2, under the key 'type'.
+    tests:
+    - not_null
+  - name: assigned_recruitment_team
+    data_type: character varying(65535)
+    description: Team assigned to the recruitment.
+    tests:
+    - not_null
+  - name: assigned_analog_user_email
+    data_type: character varying(65535)
+    description: Email from the user that inserts the analog candidate.
+    tests:
+    - not_null
+  - name: job_matching_sourced_at
+    data_type: timestamp with time zone
+    description: In the Job Matching feature position recommendations are made to
+      the candidate along with links to apply. This timestamp represents when that
+      recommendation was made. It should be less than a few seconds apart from `job_matching.recommendation_attempts.created_at`
+      of the rows that match the Candidate ID.
+    tests:
+    - not_null
+  - name: job_matching_candidate_id
+    data_type: integer
+    description: In the Job Matching feature we recommend positions to certain eligible
+      candidates. In the event they follow our recommendation and apply, this column
+      will contain the Candidate ID that the candidate had in the Sourcer Client funnel.
+    tests:
+    - not_null
+  - name: job_matching_eligibility_source
+    data_type: character varying(22)
+    description: In the Job Matching feature we source candidates from other Emi listings.
+      This field divides the Job Matching candidates in categories by the original
+      source they had in the listing from which we sourced them.
+    tests:
+    - not_null
+  - name: last_interest_revalidation_date
+    data_type: date
+    description: The date at which the candidate revalidates interest in the application.
+    tests:
+    - not_null
+  - name: source_subsource_analytics
+    data_type: character varying(769)
+    description: Combined customized source-subsource with standard source-subsource
+      in case no customization exists.
+    tests:
+    - not_null
+  - name: source_subsource_analytics_es
+    data_type: character varying(769)
+    description: Combined customized source-subsource with standard source-subsource
+      in case no customization exists for dashboards in spanish.
+    tests:
+    - not_null
+  - name: working_place_id_order
+    data_type: bigint
+    description: The position of the specific working place id in the current_working_place_ids
+      array.
+    tests:
+    - not_null
+  - name: assigned_vacancy_requester_user_email
+    data_type: character varying(65535)
+    description: The email from the coordinator of the vacancy.
+    tests:
+    - not_null
+  - name: application_rank
+    data_type: character varying(65535)
+    description: No description available.
+    tests:
+    - not_null
+- name: times
+  description: Time between funnel step-states calculated by candidate funnel instance,
+    location and position
+  columns:
+  - name: subsidiary_id
+    data_type: integer
+    description: The ID of the Subsidiary.
+    tests:
+    - not_null
+  - name: subsidiary_name
+    data_type: character varying(65535)
+    description: The name of the Subsidiary.
+    tests:
+    - not_null
+  - name: listing_id
+    data_type: integer
+    description: The ID of the listing.
+    tests:
+    - not_null
+  - name: listing_name
+    data_type: character varying(65535)
+    description: The name of the listing.
+    tests:
+    - not_null
+  - name: application_date
+    data_type: date
+    description: The date at which the candidate applied. This is usually the timestamp
+      of the application creation (`candidate.applications.created_at`), casted to
+      date format.
+    tests:
+    - not_null
+  - name: hired_date
+    data_type: date
+    description: '`Hired_at` column truncated to date.'
+    tests:
+    - not_null
+  - name: entry_date
+    data_type: date
+    description: The entry date of the candidate. This is usually loaded by the recruiter
+      and it's stored in the question indexes `entry_datetime` or `entry_date_time`.
+    tests:
+    - not_null
+  - name: manually_advanced_steps
+    data_type: boolean
+    description: Represents if the candidate has advanced any steps in the funnel
+      in a non-organical way. For example, through candidate action or support.
+    tests:
+    - not_null
+  - name: n_candidate_id
+    data_type: character varying(65535)
+    description: 'A composed identifier for candidates before Screening (where the
+      Candidate ID is created). It''s created as follows: 1. First, if the candidate
+      already has an ID, it''s equal to the Candidate ID. 2. Otherwise, if the Candidate
+      Channel ID is already associated with a Candidate ID, we use that Candidate
+      ID. 3. Finally, if we can''t associate a Candidate ID with the conversation
+      we use a concatenation of `C` plus the Candidate Channel ID.'
+    tests:
+    - not_null
+  - name: candidate_id
+    data_type: integer
+    description: The ID of the candidate. Ideally, each `candidate` ID` represents
+      one real human. This is generated after the candidate finishes its application,
+      so it does not exist in the context of screening conversations.
+    tests:
+    - not_null
+  - name: listing_candidate_id
+    data_type: integer
+    description: ID from the table `candidate.listing_candidates`. It's a unique ID
+      to represent the combination candidate - listing.
+    tests:
+    - not_null
+  - name: candidate_funnel_instance_id
+    data_type: integer
+    description: The id of the candidate funnel instance.
+    tests:
+    - not_null
+  - name: subsidiary_location_id
+    data_type: integer
+    description: The ID of the Subsidiary Location.
+    tests:
+    - not_null
+  - name: working_place_name
+    data_type: character varying(65535)
+    description: 'Name of the working place (Subsidiary Location). The assignment
+      is made by picking the first not null value from this list: 1. The working place
+      defined manually by a user through the BO after the previous manual assignment
+      2. The working place defined manually by a user through the BO, if not, 3. The
+      working place defined by the Interview service.'
+    tests:
+    - not_null
+  - name: working_place_region
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tag \"Regi\xF3n\". Matched case insensitive\
+      \ without accents."
+    tests:
+    - not_null
+  - name: working_place_province
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag "Provincia". Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_plaza
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags "Plaza", "Colonia" and "Cluster".
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_city
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags "City" and "Ciudad". Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_division
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tags \"Divisi\xF3n\" and \"C\xE9lula\"\
+      . Matched case insensitive without accents."
+    tests:
+    - not_null
+  - name: working_place_field
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag "Campo". Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_site
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag "Site". Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_state
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags "Estado" and "State". Matched case
+      insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_zone
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags "Zona", "Zone" and "Municipio".
+      Matched case insensitive without accents.
+    tests:
+    - not_null
+  - name: working_place_market
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag "Mercado". Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_format
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag "Formato". Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_zipcode
+    data_type: character varying(65535)
+    description: Value of subsidiary location tag "Zipcode". Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: working_place_category
+    data_type: character varying(65535)
+    description: "Value of subsidiary location tag \"Categor\xEDa\". Matched case\
+      \ insensitive without accents."
+    tests:
+    - not_null
+  - name: working_place_type
+    data_type: character varying(65535)
+    description: Value of subsidiary location tags "caracteristica_operacion", "Unidad
+      de Negocio", "Tipo de Sucursal" and "Tipo Sucursal". Matched case insensitive
+      without accents.
+    tests:
+    - not_null
+  - name: current_position_id
+    data_type: integer
+    description: 'The ID of the position currently assigned to the candidate in this
+      listing. The assignment is made by picking the first not null value from this
+      list: 1. Question index `new_manually_assigned_job_position_id` (the position
+      manually defined by a user through the BO after the previous manual assignment)
+      2. Question index `manually_assigned_job_position_id` (the position manually
+      defined by a user through the BO) 3. Question index `assigned_job_position_id`
+      (the position defined by the Interview service) 4. Question index `job_position_id`.
+      Note that this question index usually stores a **list** of IDs.'
+    tests:
+    - not_null
+  - name: current_position_name
+    data_type: character varying(65535)
+    description: The name of the position currently assigned to the candidate in this
+      listing.
+    tests:
+    - not_null
+  - name: current_position_first_hierarchy
+    data_type: character varying(65535)
+    description: The first hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_second_hierarchy
+    data_type: character varying(65535)
+    description: The second hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_third_hierarchy
+    data_type: character varying(65535)
+    description: The third hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: current_position_fourth_hierarchy
+    data_type: character varying(65535)
+    description: The fourth hierarchy of the position currently assigned to the candidate
+      in this listing.
+    tests:
+    - not_null
+  - name: time_to_hire_secs
+    data_type: double precision
+    description: Seconds that passed between the end of the conversation (step_type
+      = 'DESCARTES' AND state = 'INTERESTED') and the hired_date.
+    tests:
+    - not_null
+  - name: time_to_cover_emi_secs
+    data_type: double precision
+    description: Seconds that passed between the end of the conversation (step_type
+      = 'DESCARTES' AND state = 'INTERESTED') and the first interview invitation,
+      for interviews organized by Emi.
+    tests:
+    - not_null
+  - name: time_to_cover_manual_secs
+    data_type: double precision
+    description: Seconds that passed between the end of the conversation (step_type
+      = 'DESCARTES' AND state = 'INTERESTED') and the first interview evaluation,
+      for manual interviews.
+    tests:
+    - not_null
+  - name: time_from_screening_approval_to_hire_secs
+    data_type: double precision
+    description: Seconds between candidate screening approval and hire.
+    tests:
+    - not_null
+  - name: job_position_id
+    data_type: integer
+    description: Job position id.
+    tests:
+    - not_null
+  - name: is_early_offer
+    data_type: boolean
+    description: True if the candidate received the job offer before the usual time.
+    tests:
+    - not_null
+  - name: number_of_interviews
+    data_type: integer
+    description: The number of interviews the candidate has passed.
+    tests:
+    - not_null
