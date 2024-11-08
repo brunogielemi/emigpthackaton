@@ -14,7 +14,7 @@ columns:
 - column_name: candidate_id
   data_type: integer
   description: The ID of the candidate. Ideally, each `candidate` ID represents one
-    real human. This is generated after the candidate finishes its application, so
+    real human. This is generated after the hire finishes its application, so
     it does not exist in the context of screening conversations.
 - column_name: candidate_funnel_instance_id
   data_type: integer
@@ -27,11 +27,11 @@ columns:
     when the migration to Candidate Funnel Instances is completed.
 - column_name: hired_by_var
   data_type: boolean
-  description: Flag indicating whether the candidate was hired due to the hire verification
+  description: Flag indicating whether the hire was hired due to the hire verification
     check or not.
 - column_name: manually_advanced_steps
   data_type: boolean
-  description: Represents if the candidate has advanced any steps in the funnel in
+  description: Represents if the hire has advanced any steps in the funnel in
     a non-organical way. For example, through candidate action or support.
 - column_name: manually_advanced_steps_source
   data_type: character varying(65535)
@@ -42,14 +42,14 @@ columns:
     step and conversation with candidate.
 - column_name: candidate_referral
   data_type: character varying(65535)
-  description: The referral of the candidate.
+  description: The referral of the hire.
 - column_name: applied_at
   data_type: timestamp with time zone
-  description: Timestamp indicating when the candidate applied.
+  description: Timestamp indicating when the hire applied.
 - column_name: started_screening_at
   data_type: timestamp with time zone
-  description: Timestamp at which the candidate started the screening conversation.
-    It does not apply to candidates who applied through other means as forms or walkers.
+  description: Timestamp at which the hire started the screening conversation.
+    It does not apply to hire who applied through other means as forms or walkers.
 - column_name: completed_screening_at
   data_type: timestamp with time zone
   description: Timestamp indicating when the screening process was completed.
@@ -59,15 +59,15 @@ columns:
     to begin (does not require acceptance, only invitation).
 - column_name: hired_at
   data_type: date
-  description: 'Timestamp at which the candidate was hired. It usually consists of
-    the timestamp of the movement of the candidate to a hired step, but it can be
+  description: 'Timestamp at which the hire was hired. It usually consists of
+    the timestamp of the movement of the hire to a hired step, but it can be
     overwritten with the following information: 1. Clients with the Entry Date feature:
-    the entry date of the candidate at work, provided by the client in the BO. 2.
-    Candidates manually advanced to the hired step: with a hire date provided by the
+    the entry date of the hire at work, provided by the client in the BO. 2.
+    hire manually advanced to the hired step: with a hire date provided by the
     client or support.'
 - column_name: step_hired_at
   data_type: timestamp with time zone
-  description: Timestamp indicating when the candidate reaches the hire step, without
+  description: Timestamp indicating when the hire reaches the hire step, without
     considering the entry date.
 - column_name: hire_rank
   data_type: bigint
@@ -75,10 +75,10 @@ columns:
 - column_name: hire_user_id
   data_type: numeric(18,0)
   description: User id responsible for the hire, considering user ids from all the
-    funnel in order by user who moves candidate to hire to user who attracted.
+    funnel in order by user who moves hire to hire to user who attracted.
 - column_name: candidate_name
   data_type: character varying(65535)
-  description: The name of the candidate. It is stored in the question index `name_logic`.
+  description: The name of the hire. It is stored in the question index `name_logic`.
 - column_name: candidate_email
   data_type: character varying(65535)
   description: Email of the candidate.
@@ -98,7 +98,7 @@ columns:
   description: Age of the candidate.
 - column_name: age_category
   data_type: character varying(83)
-  description: Category of age the candidate belongs to.
+  description: Category of age the hire belongs to.
 - column_name: nationality
   data_type: character varying(65535)
   description: Nationality of the candidate.
@@ -118,58 +118,58 @@ columns:
     time).
 - column_name: has_experience_atc
   data_type: boolean
-  description: Flag indicating if the candidate has experience in ATC.
+  description: Flag indicating if the hire has experience in ATC.
 - column_name: has_experience_factory
   data_type: boolean
-  description: Flag indicating if the candidate has experience in a factory.
+  description: Flag indicating if the hire has experience in a factory.
 - column_name: has_experience_forklift
   data_type: boolean
-  description: Flag indicating if the candidate has experience with forklifts.
+  description: Flag indicating if the hire has experience with forklifts.
 - column_name: has_experience_logic
   data_type: boolean
-  description: Flag indicating if the candidate has experience in logic.
+  description: Flag indicating if the hire has experience in logic.
 - column_name: has_experience_pallet_truck
   data_type: boolean
-  description: Flag indicating if the candidate has experience with pallet trucks.
+  description: Flag indicating if the hire has experience with pallet trucks.
 - column_name: has_experience_products_rotation_exhibition
   data_type: boolean
-  description: Flag indicating if the candidate has experience in products rotation
+  description: Flag indicating if the hire has experience in products rotation
     and exhibition.
 - column_name: has_experience_sales
   data_type: boolean
-  description: Flag indicating if the candidate has experience in sales.
+  description: Flag indicating if the hire has experience in sales.
 - column_name: has_experience_warehouse_associate
   data_type: boolean
-  description: Flag indicating if the candidate has experience as a warehouse associate.
+  description: Flag indicating if the hire has experience as a warehouse associate.
 - column_name: has_experience_dinero
   data_type: boolean
-  description: Flag indicating if the candidate has experience with dinero (money).
+  description: Flag indicating if the hire has experience with dinero (money).
 - column_name: has_experience_driving_vehicle
   data_type: boolean
-  description: Flag indicating if the candidate has experience in driving vehicles.
+  description: Flag indicating if the hire has experience in driving vehicles.
 - column_name: has_experience_general_assistant
   data_type: boolean
-  description: Flag indicating if the candidate has experience as a general assistant.
+  description: Flag indicating if the hire has experience as a general assistant.
 - column_name: has_experience_money
   data_type: boolean
-  description: Flag indicating if the candidate has experience with money.
+  description: Flag indicating if the hire has experience with money.
 - column_name: has_experience_production_line
   data_type: boolean
-  description: Flag indicating if the candidate has experience on a production line.
+  description: Flag indicating if the hire has experience on a production line.
 - column_name: has_experience_sales_assistant
   data_type: boolean
-  description: Flag indicating if the candidate has experience as a sales assistant.
+  description: Flag indicating if the hire has experience as a sales assistant.
 - column_name: has_experience_shift_planner
   data_type: boolean
-  description: Flag indicating if the candidate has experience as a shift planner.
+  description: Flag indicating if the hire has experience as a shift planner.
 - column_name: has_experience_warehouse_laborer
   data_type: boolean
-  description: Flag indicating if the candidate has experience as a warehouse laborer.
+  description: Flag indicating if the hire has experience as a warehouse laborer.
 - column_name: has_experience_workplace_cleaner
   data_type: boolean
-  description: Flag indicating if the candidate has experience as a workplace cleaner.
+  description: Flag indicating if the hire has experience as a workplace cleaner.
 - column_name: has_experience_warehouse_executive
   data_type: boolean
-  description: Flag indicating if the candidate has experience as a warehouse executive.
+  description: Flag indicating if the hire has experience as a warehouse executive.
 table_description: Hires by candidate funnel instance, location and position
 table_name: hires
