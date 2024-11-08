@@ -1,270 +1,149 @@
-Start_chat
-
-"system": "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous."
-
-Databases file:
+start_chat:
+  system: "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous."
 
 databases:
- - name: "warehouse"
-   prefix: "WAREHOUSE"
-   description: "Warehouse. Use this database when the prompt includes 'warehouse'. You will use the marts schema on every query"
-   files:
-     - "marts.yml"
- - name: "cbo server"
-   prefix: "CBO"
-   description: "This database contains listing, subsidiaries, and other clients information. It also has employees conversations"
-   files:
-     - "cbo.json"
- - name: "candidate interview database"
-   prefix: "INTERVIEW"
-   description: "Candidate interview database contains all interview, interviewees, assignments, requisitions, and slots information."
-   files:
-     - "candidate-interview.sql"
-
-
-
-
-Functions:
-
-       "type": "function",
-       "function": {
-           "name": "ask_a_database",
-           "description": "Use this when asked to use any database, pass what the user asked as input",
-           "parameters": {
-               "type": "object",
-               "properties": {
-                   "human_question": {
-                       "type": "string",
-                       "description": "Pass the human question with the database to use if it was specified"
-                   }
-               },
-               "required": [
-                   "human_question"
-               ]
-           }
-       }
-
-
-—
-
-Forma de crear queries:
-
-You are a SQL builder. Only answer in queries for this postgresql database. You ONLY respond valid queries. Do not include any markdown formatting. This is the description of the database: `{description}`. This is the schema: ```{schema}```
-
-Entidades:
-
-Belu:
-
-Cliente: 
-Empresas que compran nuestro producto o solución.
-
-Que es un segmento de negocio:
-Un segmento del negocio es un componente identificable de la empresa, encargado de suministrar un único producto o servicio.
-
-Candidato
-Persona que pretende y se postula a una posición.
-
-
-ARR 
-Annual recurring revenue  o ingreso recurrente anual.
-
-NDR
-Net dollar retention, o ingresos recurrentes mensuales o anuales.
-
-
-Subsidiary
-Cuenta única asociada a un cliente.
-
-Indicadores clave reclutamiento
-Tiempo de cobertura: El tiempo de contratación es una métrica que se refiere a la cantidad de días que transcurren desde que se publica un puesto hasta que un candidato acepta una oferta de trabajo
-
-Tiempo de contratación: El tiempo de contratación se calcula midiendo el número de días naturales que transcurren entre la publicación de una vacante y el día en el que el candidato acepta la oferta de trabajo. 
-
-Fuente de contratación: Tanto si las organizaciones optan por utilizar las redes sociales, portales de empleo, las referencias de los empleados o las agencias de reclutamiento, el seguimiento de la fuente de contratación puede determinar de dónde vienen los candidatos más calificados para que los equipos no pierdan el tiempo en fuentes que no son tan valiosas. 
-
-Costo por contratación: El costo por contratación de una organización indica cuánto gastas en “adquirir” un nuevo empleado. Esta medida es uno de los principales componentes del gasto total de la organización al momento de cubrir una vacante. 
-
-
-
-
-Benchmark: 
-El benchmarking consiste en un estudio profundizado sobre tus competidores para entender las estrategias y mejores prácticas utilizadas por ellos. Siendo así, este análisis permite que tu empresa reproduzca o adapte algunas de las acciones para atraer al público y reconquistarlo.
-
-Reclutador: 
-Llamamos reclutador o buscatalentos a aquel profesional cuya función consiste en buscar talento humano para cubrir los puestos de trabajo vacantes que tenga la empresa.
-
-Semáforo clientes: es un indicador de medición de salud de clientes, basado en la adopción de la herramienta.
-
-CSM: Customer Success Manager, quien trabaja con el cliente el cumplimiento de objetivos y la creación de partnership a largo plazo.
-
-PM: Project manager
-persona encargada de organizar, planear y controlar los recursos disponibles con la finalidad de alcanzar los objetivos propuestos para lograr el éxito dentro de un periodo de tiempo, inversión y calidad.
-
-
-
-Nacho:
-
-Stakeholder:
-Existen diversos roles dentro de los clientes, y cada uno de ellos con distintas, necesidades, expectativas y responsabilidades. Si bien cada uno de ellos también posee diferente grado de influencia sobre una renovación y posible upsell, es importante lograr mantener contentos a cada uno de ellos, ya que de esta manera, en caso de sufrir alguna salida de alguno de ellos, no se ve comprometida la relación con Emi.
-
-Tipos de Stakeholders:
-Stakeholders tier 1:
-
-Economic Buyer: es quien define y cuenta con budget para el proyecto, y generalmente quien firma el contrato.
-Decision Maker: es quien toma la decisiones a nivel estratégico con respecto al contrato mantenido con Emi. Es a quien hay que convencer para una renovación y/o upsell.
-Strategic Champion: es quien toma decisiones estratégicas del proyecto a corto y mediano plazo, una vez definido el marco contractual.
-Operative Champion: es quien se encuentra en el día a día de la relación con Emi, y quien ejecuta operativa y tácticamente lo definido por el Strategic Champion.
-
-Stakeholders tier 2:
-
-Recruiting Manager / Middle Manager: son los jefes de los end users.
-End users:son quienes utilizan la plataforma y realizan acciones de atracción y/o selección de personal operativo.
-Hiring Managers:son quienes entrevistan y dan su validación final del candidato en cuanto al perfil, generalmente los jefes directos.
-
-Stakeholders tier 3:
-
-HRBP: es el principal cliente interno del equipo de reclutamiento, y uno de los principales interesados por mantener cubierta la plantilla.
-IT Manager:es quien vela por la estrategia y sinergia de los sistemas dentro del cliente, dentro de los cuales se encuentra Emi.
-Others:pueden existir otros stakeholders que estén interesados en el proyecto, dependiendo del tamaño, estructura y visión del cliente, sobre los cuales también es importante comprender sus necesidades y mantenerlos onboard. Por ejemplo, áreas como: Operaciones, Transformación Digital, Experiencia del Candidato, Experiencia del Colaborador, Entrenamiento, Administración del Personal, otras.
-
-Contacto:
-Un prospecto externo que estamos intentando contactar; en este caso, no conocen Emi ni han tenido reuniones con nosotros. Otros casos incluyen a todos los prospectos que ya conocen Emi y han tenido reuniones con nosotros en el pasado.
-
-BDR:
-Business Development Representative, es la persona encargada de la primera parte del proceso de ventas, consigue y crea contactos, abre conversaciones con empresas estratégicas que se pueden convertir en clientes.
-
-Accounts:
-Las Accounts son empresas que dentro del proceso comercial estamos rechazando o con las que hemos generado oportunidades o queremos generar en el futuro.
-
-Opportunities:
-Proceso comercial activo.
-
-Etapas de oportunidades:
-Discovery: Entender las necesidades del cliente, identificar competidores y definir el resultado deseado.
-Scoping: Cuantificar los problemas del cliente y establecer métricas iniciales.
-Economic Buyer Meeting: Presentar la propuesta al tomador de decisiones.
-Validation: Asegurar que el cliente comprenda la solución.
-Final proposal presentation: Presentar la propuesta final al cliente.
-Negotiation & Close: Negociar y firmar el contrato.
-Closed Lost: La oportunidad de venta se pierde.
-
-AE:
-Account Exacutive, es el siguiente al BDR en el proceso comercial de una oportunidad, abarca desde la etapa de Discovery hasta la firma del contrato.
-
-SQL:
-Sales Qualified Lead, es un prospecto/contacto que demostro interes en saber más sobre Emi, y pasa ser parte de un proceso comercial con el AE y el BDR.
-
-SQO: 
-Una oportunidad calificada por un AE como valiosa para continuar el proceso comercial.
-
-
-
-Maite:
-
-Listing: Es la entidad que representa una búsqueda de empleo para el cliente. Cada listing tiene asociadas sus: Posiciones (ej Cajero, Almacenista, etc) y Locations (ej. Tienda A CDMX, Tienda B CDMX, etc). Una subsidiary puede tener múltiples listings.
-
-Feature: La oferta de producto de Emi se divide en features. Cada feature aporta un valor específico. Puede o no estar configurado en un cliente en Emi. Algunas features se configuran a nivel subsidiary, otras a nivel listing y otras a nivel step.
-
-
-Posición: Una posición es la entidad que representa ciertas caracteristicas de un trabajo que los clientes de Emi desean cubrir. Todos los candidatos de Emi al terminar la aplicación tiene asociada una o más posición. Estas son las keys en Emi para referirse a posición:
-job_position_id : Es la key que contiene las posiciones posibles en formato id. Son todas las posiciones para las cuales el candidato aprobó screening. Se suele usar para visibilizar en el BO en Prefiltro y TP. Es la key que se modifica en la CA “Editar posición”
-job_position : Es la key que contiene las posiciones posibles en formato texto.
-assigned_job_position_id : Es el id de la posición para la cual se llamó a entrevista al candidato. Sólo se crea de forma automática si el candidato se llama a entrevista, no todos los candidatos lo tienen.
-manually_assigned_job_position_id : Cuando se da feedback de entrevista o si se quiere avanzar manualmente a un candidato desde el TP al siguiente step sin llamar a entrevista, TIM configura un pop-up donde se debe elegir la posición y la tienda: esta key es el elegido en este pop-up. Al seleccionar y avanzar al candidato, se crea. Se suele usar en los steps posteriores a Interview. Es la key que se modifica en la CA “Editar posición asignada”.
-assigned_job_position : Se puede crear a partir de assigned_job_position_id con una transformada, no es automático.
-manually_assigned_job_position : Se suele crear a partir de manually_assigned_job_position_id con una transformada, no es automático.
-
-Step: Los candidatos en Emi pasan por distintas etapas, esas etapas en el back office se llaman step. Los steps pueden ser de tipo manual, integration, interview, hired o descartes.
-
-Stage: Los candidatos en Emi pasan por distintas etapas, esas etapas en el pipeline de console se llaman stage. Los steps pueden ser de tipo manual, integration, interview, hired o descartes.
-
-State: Los candidatos en Emi siempre tienen asociado un state. Hay distintos actores que hacen que los candidatos cambien de state: un trigger, una candidate action, un cambio en un flujo. En Emi hay una máquina de estados que controla el cambio de estados de los candidatos.
-
-Candidato: Un candidato puede aplicar más de una vez a Emi. Emi intenta reconocer si es la misma persona / candidato y en ese caso une los candidatos. Un candidato puede aplicar muchas veces por diferentes canales.
-
-Razon de rechazo: 
-
-Conversación trabada:
-
-Usuario:
-
-Jerarquía:
-
-Learning:
-
-Cami:
-
-Emi: Emi Labs es una empresa que ofrece una plataforma de automatización de reclutamiento, diseñada especialmente para facilitar el proceso de contratación en roles de alta demanda y operativos. Automatiza tareas como el reclutamiento, la evaluación, la programación de entrevistas y la incorporación de candidatos, optimizando así el tiempo y la eficiencia del equipo de reclutamiento. Su enfoque se centra en mejorar la experiencia del candidato y reducir el tiempo de contratación mediante la integración con diversas herramientas de RR.HH. y plataformas de mensajería.
-
-Emis: En Emi Labs, "emis" es el término interno que utilizan para referirse a las personas que forman parte del equipo y trabajan en la empresa.
-
-Emizards: En Emi Labs, "emizards" es el término interno más informal que utilizan para referirse a las personas que forman parte del equipo y trabajan en la empresa.
-
-
-
-Bruno
-Clientes y Subsidiarias
-Identifica preguntas sobre clientes y su relación con EMI, su configuración, características, y su organización en subsidiarias.
-Glosario: 
-Cliente es una empresa contrató nuestros servicios
-Subsidiaria es una categoría dentro de nuestros clientes, pueden ser marcas o centros de costos, ejemplo Alsea retail y Alsea Cedis
-Tenemos clientes que pueden estar activos o no, usamos un flag para marcarlo (relevant to analytics para subsidiaries activas) y los que dicen testing no funcionan
-Ejemplos:
-"¿Cuál es la subsidiary de tal listing?"
-"¿Qué clientes tienen configurada tal feature?"
-"¿Qué clientes tienen el feature de configuración?"
-"¿Quien es el CSM del cliente?"
-Características y Configuraciones de Features
-Involucra preguntas sobre los features específicos que tiene un cliente, qué está activado, configuraciones de procesos y flujos internos.
-Glosario:
-Feature es una solución de un cliente
-Cada feature puede tener diferentes configuraciones
-Las configuraciones posibles están detalladas en el RD 
-Ejemplos:
-"¿Qué features tiene activo el pipeline/listing X?"
-"¿Cuáles son los listings que tienen el step de integración (Validación de Documentación)?"
-"Que clientes usan la feature de Link Generator?"
-"¿Ya hay material de learning de este feature?"
-Flujo y Estado de los Candidatos
-Preguntas sobre el estado, movimientos y resultados de los candidatos dentro del proceso de selección.
-Glosario:
-Un candidato puede tener varios estados, como conversación iniciada, aplicación iniciada, terminada, ser aprobado a rechazado en screening y todos los pasos que siguen en el proceso de reclutamiento
-Ejemplos:
-"¿En qué step state está este candidato?"
-"¿Por qué este candidato no aparece?"
-"¿Cuándo fue la primera aplicación de este candidato?"
-"¿A qué link aplicó este candidato?"
-Información de Candidatos y Procesos de Selección
-Agrupa preguntas relacionadas con los candidatos, sus características, el flujo de entrevistas y procesos de selección.
-Ejemplos:
-"¿Cuántos candidatos contratados no pasaron por step de entrevista?"
-"¿En qué step se caen más los candidatos?"
-"¿Cuál es el % de aplicaciones de mujeres? y cuántas contratan en Walmart?"
-"Cuántos candidatos trabados en PENDING_VERDICT tiene Viva Aerobus?"
-Regiones y Demanda de Mercado
-Enfocado en la información geográfica y análisis de demanda en distintas regiones o industrias.
-Glosario:
-Tenemos 2 formas de catalagoras direcciones o regiones, tenemos info estanadrizada en geocoder que nos muestra ciudad, provincia, colonia, etc estandarizado o bien clientes que tienen formas particulares de llamar a sus regiones. Por ejemplo: Yucatán y alrededores que puede incluir a cancún, playa del carmen y otras mas, o región centro que incluye a ciertos centros de costos que están ahí.
-Ejemplos:
-"¿Cuántos candidatos aplican a EMI en Cuernavaca?"
-"¿Cuál es la región de EMI con mayor flujo de candidatos en México?"
-"¿Cuáles son los picos de contrataciones durante el año?"
-"Regiones/Estados ordenados por demanda de candidatos, segmentado por industria"
-Documentación y Recursos Internos
-Preguntas relacionadas con la ubicación de documentos, configuraciones, y recursos internos que pueden necesitarse.
-Glosario de términos:
-Esto puede encontrarse normalmente en el notion de la empresa
-Ejemplos:
-"¿Dónde está el documento de alcance de X cliente?"
-"¿Hay un glosario de términos internos?"
-"¿Donde hay una ppt que muestre alternativas de configuraciones al cliente?"
-"¿Que contratos tienen renovación de forma automática?"
-Contratos y Términos Legales
-Preguntas relacionadas con contratos, renovaciones y términos específicos para la gestión legal.
-Glosario de términos
-Esto puede encontrarse en el Gdrive de la empersa
-Ejemplos:
-"¿Qué contratos vencen en diciembre?"
-"¿Cuánto sale EMIReady?"
-"¿Nos podemos integrar por API pública?"
-"¿Cuánto tiempo nos lleva una implementación?
+  - name: "warehouse"
+    prefix: "WAREHOUSE"
+    description: "Warehouse. Use this database when the prompt includes 'warehouse'. You will use the marts schema on every query"
+    files:
+      - "marts.yml"
+  - name: "cbo server"
+    prefix: "CBO"
+    description: "This database contains listing, subsidiaries, and other clients information. It also has employees conversations"
+    files:
+      - "cbo.json"
+  - name: "candidate interview database"
+    prefix: "INTERVIEW"
+    description: "Candidate interview database contains all interview, interviewees, assignments, requisitions, and slots information."
+    files:
+      - "candidate-interview.sql"
+
+functions:
+  - type: "function"
+    function:
+      name: "ask_a_database"
+      description: "Use this when asked to use any database, pass what the user asked as input"
+      parameters:
+        type: "object"
+        properties:
+          human_question:
+            type: "string"
+            description: "Pass the human question with the database to use if it was specified"
+        required:
+          - "human_question"
+
+query_instructions:
+  description: "You are a SQL builder. Only answer in queries for this PostgreSQL database. You ONLY respond valid queries. Do not include any markdown formatting."
+  fields:
+    description: "{description}"
+    schema: "{schema}"
+
+concepts:
+  Belu:
+    Cliente:
+      definition: "Empresas que compran nuestro producto o solución."
+    Segmento_de_negocio:
+      definition: "Un segmento del negocio es un componente identificable de la empresa, encargado de suministrar un único producto o servicio."
+    Candidato:
+      definition: "Persona que pretende y se postula a una posición."
+    ARR:
+      definition: "Annual Recurring Revenue o ingreso recurrente anual."
+    NDR:
+      definition: "Net Dollar Retention, o ingresos recurrentes mensuales o anuales."
+    Subsidiary:
+      definition: "Cuenta única asociada a un cliente."
+    Indicadores_clave_reclutamiento:
+      definitions:
+        - Tiempo_de_cobertura: "Cantidad de días que transcurren desde que se publica un puesto hasta que un candidato acepta una oferta de trabajo."
+        - Tiempo_de_contratacion: "Número de días naturales entre la publicación de una vacante y la aceptación de la oferta."
+        - Fuente_de_contratación: "Seguimiento de la fuente de contratación para optimizar recursos en la búsqueda de talento."
+        - Costo_por_contratación: "Costo asociado a la adquisición de un nuevo empleado."
+
+  Nacho:
+    KPI:
+      definition: "Indicador clave de desempeño."
+    Stakeholder:
+      description: "Roles dentro de los clientes, con diversas necesidades, expectativas y responsabilidades."
+    Tipos_de_stakeholders:
+      tier1:
+        Economic_Buyer: "Define y cuenta con budget para el proyecto."
+        Decision_Maker: "Toma decisiones estratégicas con respecto al contrato con Emi."
+        Strategic_Champion: "Decide sobre el proyecto a corto y mediano plazo."
+        Operative_Champion: "Ejecuta operativa y tácticamente."
+      tier2:
+        Recruiting_Manager: "Jefe de end users."
+        End_users: "Utilizan la plataforma para atracción y/o selección de personal operativo."
+        Hiring_Managers: "Entrevistan y validan candidatos."
+      tier3:
+        HRBP: "Interesado en mantener cubierta la plantilla."
+        IT_Manager: "Supervisa la estrategia y sinergia de sistemas."
+
+  Maite:
+    Listing:
+      definition: "Representa una búsqueda de empleo para el cliente."
+      details: "Cada listing tiene asociadas Posiciones y Locations."
+    Feature:
+      definition: "Funcionalidades específicas de Emi Labs, aportan valor específico al cliente."
+    Posición:
+      definition: "Representa características de un trabajo que los clientes de Emi desean cubrir."
+      keys:
+        - job_position_id: "Key de posiciones en formato ID."
+        - job_position: "Posiciones en formato texto."
+        - assigned_job_position_id: "ID de la posición asignada para entrevista."
+    Step:
+      definition: "Etapas del proceso en el back office de Emi Labs."
+    Stage:
+      definition: "Etapas del pipeline en console."
+    State:
+      description: "Asociación de estados de candidatos, controlados por triggers o cambios de flujo."
+    Candidato:
+      description: "Puede aplicar múltiples veces. Emi Labs unifica el perfil del candidato."
+    Razon_de_rechazo:
+      description: "Razón por la cual se rechaza a un candidato en el proceso."
+    Conversación_trabada:
+      description: "Momento en que una conversación con el candidato queda detenida."
+    Usuario:
+      description: "Persona que interactúa con el sistema de Emi Labs."
+    Jerarquía:
+      description: "Organización jerárquica en la estructura de un cliente."
+    Learning:
+      description: "Material educativo disponible para features y procesos."
+
+  Cami:
+    Emi:
+      definition: "Empresa de automatización de reclutamiento, centrada en mejorar la experiencia del candidato."
+    Emis:
+      definition: "Término para referirse al equipo de Emi Labs."
+    Emizards:
+      definition: "Término informal para el equipo de Emi Labs."
+
+  Bruno:
+    Clientes_y_subsidiarias:
+      description: "Identifica clientes, sus configuraciones y relaciones en Emi."
+      examples:
+        - "¿Cuál es la subsidiary de tal listing?"
+        - "¿Qué clientes tienen configurada tal feature?"
+    Características_y_configuraciones_de_features:
+      description: "Información sobre los features y configuraciones de los clientes."
+      examples:
+        - "¿Qué features tiene activo el pipeline/listing X?"
+    Flujo_y_estado_de_candidatos:
+      description: "Preguntas sobre estado y movimientos de los candidatos en el proceso."
+      examples:
+        - "¿En qué step state está este candidato?"
+    Información_de_candidatos_y_procesos_de_selección:
+      description: "Datos sobre los candidatos, características y flujo de entrevistas."
+      examples:
+        - "¿Cuántos candidatos contratados no pasaron por step de entrevista?"
+    Regiones_y_demanda_de_mercado:
+      description: "Información sobre la demanda de candidatos en distintas regiones."
+      examples:
+        - "¿Cuántos candidatos aplican a EMI en Cuernavaca?"
+    Documentación_y_recursos_internos:
+      description: "Ubicación de documentos y configuraciones internas."
+      examples:
+        - "¿Dónde está el documento de alcance de X cliente?"
+    Contratos_y_términos_legales:
+      description: "Preguntas sobre contratos, renovaciones y términos específicos."
+      examples:
+        - "¿Qué contratos vencen en diciembre?"
