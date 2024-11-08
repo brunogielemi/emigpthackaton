@@ -819,7 +819,7 @@ models:
     - not_null
 - name: obt_funnel
   description: Candidate's steps and states opened by candidate funnel instance, locations
-    and positions
+    and positions. 
   columns:
   - name: subsidiary_id
     data_type: integer
@@ -2974,3 +2974,156 @@ models:
     description: The number of interviews the candidate has passed.
     tests:
     - not_null
+- name: last_step_states
+    description: "Current step state of each candidate by listing. This table indicates where a candidate currently is"
+    columns:
+      - name: subsidiary_id
+        data_type: integer
+        description: "The ID of the Subsidiary."
+        tests:
+          - not_null
+      - name: subsidiary_name
+        data_type: character varying(65535)
+        description: "The name of the Subsidiary."
+        tests:
+          - not_null
+      - name: listing_id
+        data_type: integer
+        description: "The ID of the listing."
+        tests:
+          - not_null
+      - name: listing_name
+        data_type: character varying(65535)
+        description: "The name of the listing."
+        tests:
+          - not_null
+      - name: candidate_id
+        data_type: integer
+        description: "The ID of the candidate."
+        tests:
+          - not_null
+      - name: candidate_funnel_instance_id
+        data_type: integer
+        description: "The ID of the candidate funnel instance."
+        tests:
+          - not_null
+      - name: subsidiary_location_id
+        data_type: integer
+        description: "The ID of the Subsidiary Location."
+        tests:
+          - not_null
+      - name: working_place_name
+        data_type: character varying(65535)
+        description: "Name of the working place (Subsidiary Location)."
+        tests:
+          - not_null
+      - name: working_place_region
+        data_type: character varying(65535)
+        description: "Region of the working place."
+        tests:
+          - not_null
+      - name: working_place_province
+        data_type: character varying(65535)
+        description: "Province of the working place."
+        tests:
+          - not_null
+      - name: working_place_plaza
+        data_type: character varying(65535)
+        description: "Plaza of the working place."
+        tests:
+          - not_null
+      - name: working_place_city
+        data_type: character varying(65535)
+        description: "City of the working place."
+        tests:
+          - not_null
+      - name: working_place_division
+        data_type: character varying(65535)
+        description: "Division of the working place."
+        tests:
+          - not_null
+      - name: working_place_field
+        data_type: character varying(65535)
+        description: "Field of the working place."
+        tests:
+          - not_null
+      - name: working_place_site
+        data_type: character varying(65535)
+        description: "Site of the working place."
+        tests:
+          - not_null
+      - name: working_place_state
+        data_type: character varying(65535)
+        description: "State of the working place."
+        tests:
+          - not_null
+      - name: working_place_zone
+        data_type: character varying(65535)
+        description: "Zone of the working place."
+        tests:
+          - not_null
+      - name: working_place_market
+        data_type: character varying(65535)
+        description: "Market of the working place."
+        tests:
+          - not_null
+      - name: working_place_format
+        data_type: character varying(65535)
+        description: "Format of the working place."
+        tests:
+          - not_null
+      - name: working_place_zipcode
+        data_type: character varying(65535)
+        description: "Zipcode of the working place."
+        tests:
+          - not_null
+      - name: working_place_category
+        data_type: character varying(65535)
+        description: "Category of the working place."
+        tests:
+          - not_null
+      - name: working_place_type
+        data_type: character varying(65535)
+        description: "Type of the working place."
+        tests:
+          - not_null
+      - name: position_id
+        data_type: integer
+        description: "The ID of the position currently assigned to the candidate in this listing."
+        tests:
+          - not_null
+      - name: position_name
+        data_type: character varying(65535)
+        description: "The name of the position."
+        tests:
+          - not_null
+      - name: position_first_hierarchy
+        data_type: character varying(65535)
+        description: "The first hierarchy of the position."
+        tests:
+          - not_null
+      - name: position_second_hierarchy
+        data_type: character varying(65535)
+        description: "The second hierarchy of the position."
+        tests:
+          - not_null
+      - name: position_third_hierarchy
+        data_type: character varying(65535)
+        description: "The third hierarchy of the position."
+        tests:
+          - not_null
+      - name: position_fourth_hierarchy
+        data_type: character varying(65535)
+        description: "The fourth hierarchy of the position."
+        tests:
+          - not_null
+      - name: applied_at
+        data_type: timestamp with time zone
+        description: "Timestamp indicating when the candidate applied."
+        tests:
+          - not_null
+      - name: available_for_interview
+        data_type: boolean
+        description: "Flag indicating whether the candidate is available for an interview."
+        tests:
+          - not_null
